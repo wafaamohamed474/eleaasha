@@ -1,0 +1,134 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+@tailwind utilities;
+
+@theme {
+  --font-cairo: var(--font-cairo);
+  --font-poppins: var(--font-poppins);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+}
+
+* {
+  box-sizing: border-box;
+
+}
+
+:root {
+  --background: #ffffff;
+  --primary: #F18B24;
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #F5F5F5;
+  --secondary: #3A2B5F;
+  --secondary-hover: #2A1F45;
+  --error: #EF4444;
+  --input-bg: #F9FAFB;
+  --label-text: #000000;
+  --border: #FFFFFF4D;
+  --ring: #F18B24;
+  --main-text : #B2B2B2;
+  --secondary-text : #575151;
+  --item-hover : #3A2B5F1A;
+  --item-text :#9D9D9D;
+  --settings-hover : #F18B241A;
+  --item-icon:#A7A7A7;
+  --settings-content:#616161;
+  
+  --gradient-btn: linear-gradient(90deg, #3A2B5F 8%, #F18B24 100%);
+  --gradient-radial-ar: radial-gradient(circle at left, rgba(241, 139, 36, 1) 0%,rgba(241, 139, 36, 0.9) 1%, rgba(58, 43, 95, 1) 40%);
+  --gradient-radial-en: radial-gradient(circle at right, rgba(241, 139, 36, 1) 0%,rgba(241, 139, 36, 0.9) 1%, rgba(58, 43, 95, 1) 40%);
+  --gradient-radial-mobile: radial-gradient(circle at bottom, rgba(241, 139, 36, 0.8) 0%, rgba(58, 43, 95, 1) 50%);
+  --sidebar: hsl(0 0% 98%);
+  --sidebar-foreground: hsl(240 5.3% 26.1%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(240 4.8% 95.9%);
+  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+   /* -------- Accent / Special -------- */
+  --accent: #e4e4e7;
+  --accent-foreground: #18181b;
+  --shadow-primary-sm: 0 1px 4px rgba(241, 139, 36, 0.3);
+  --shadow-primary-md: 0 1px 10px rgba(241, 139, 36, 0.4);
+  --shadow-primary-lg: 0 4px 20px rgba(241, 139, 36, 0.45);
+
+  --shadow-secondary-sm: 0 1px 4px rgba(58, 43, 95, 0.3);
+  --shadow-secondary-md: 0 1px 10px rgba(58, 43, 95, 0.4);
+  --shadow-secondary-lg: 0 4px 20px rgba(58, 43, 95, 0.45);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+img {
+  width: 100%;
+}
+
+.container-custom {
+  @apply container mx-auto px-4 sm:px-6 lg:px-8;
+}
+.sec-p {
+  @apply py-10;
+}
+.sec-class{
+  @apply bg-white! lg:border border-gray-100 lg:rounded-2xl lg:p-8 p-0
+}
+
+@layer base {
+  body {
+    @apply bg-background  ;
+  }
+}
+
+@layer utilities {
+  .btn-gradient {
+    background: var(--gradient-btn);
+    color: white;
+  }
+
+}
+
+/* Dashboard Layout Variables */
+:root {
+  --sidebar-width: 280px;
+  --navbar-height: 64px;
+  --transition-duration: 0.3s;
+}
+
+/* Dashboard Utilities */
+@layer utilities {
+  .sidebar-transition {
+    transition: transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .navbar-shadow {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+}
+
+ 
+@theme inline {
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

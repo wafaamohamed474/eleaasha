@@ -1,0 +1,202 @@
+{
+  "Hero": {
+    "title": "The Smart Catering Management System for Your Company",
+    "description": "El-Eaasha is an all-in-one platform that brings together everything related to meals, workforce, and locations in one easy-to-use system. Track orders, manage leaves, monitor budgets, and ensure every meal arrives on time.",
+    "startNow": "Start Now"
+  },
+  "About": {
+    "title": "About Us",
+    "description": "At Eashahtech, we provide a comprehensive digital solution that facilitates daily subsistence management for companies' employees and workers across various locations.\nThe Eashahtech app is an advanced electronic platform connecting companies, restaurants, and delivery providers in a single system to organize and distribute workers' meals automatically, accurately, and securely.\nThe platform is designed to serve contracting sectors, factories, government projects, and operation & maintenance companies.\nIt helps reduce administrative effort, save time, improve service quality, and ensure meals arrive on time with the highest operational efficiency."
+  },
+  "Navigation": {
+    "home": "Home",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "login": "Login"
+  },
+  "Footer": {
+    "about": "Follow us on social media",
+    "downloadApp": "Download Your Living App Now",
+    "downloadDesc": "Available on all devices to facilitate living management anytime, anywhere.",
+    "customerService": "Customer Service",
+    "contactWhatsapp": "Contact via WhatsApp",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms and Conditions",
+    "importantLinks": "Important Links",
+    "dashboard": "Control Panel",
+    "orders": "Orders",
+    "profile": "Personal Profile",
+    "company": "Company and Locations"
+  },
+  "Auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Login to manage your meals",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter phone number",
+      "password": "Password",
+      "passwordPlaceholder": "Enter password",
+      "forgotPassword": "Forgot Password?",
+      "submit": "Login",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create Account",
+      "required": "This field is required",
+      "phoneError": "Phone number must be 9 digits",
+      "passwordError": "Password must be at least 8 characters"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Register your company and start managing meals easily from one place.",
+      "companyName": "Company Name",
+      "companyNamePlaceholder": "Enter company name",
+      "managerName": "Catering Manager Name",
+      "managerNamePlaceholder": "Enter manager name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter phone number",
+      "password": "Password",
+      "passwordPlaceholder": "Enter password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "login": "Login",
+      "required": "This field is required",
+      "phoneError": "Phone number must be 9 digits",
+      "passwordError": "Password must be at least 8 characters",
+      "nameError": "Name must be at least 2 characters",
+      "companyNameError": "Company name must be at least 2 characters"
+    },
+    "verify": {
+      "title": "Account Confirmation",
+      "subtitle": "Verification code has been sent to <highlight>{phone}</highlight> consisting of 4 digits. Please enter the verification code below to activate your account and continue registration.",
+      "timerPrefix": "Code expires in",
+      "minutes": "minutes",
+      "resendQuestion": "Didn't receive the code?",
+      "resendAction": "Resend",
+      "submit": "Account Confirmation",
+      "required": "This field is required",
+      "otpError": "Verification code must be 4 digits",
+      "phoneError": "Phone number must be 9 digits",
+      "successMessage": "Account verified successfully ✅",
+      "resendSuccess": "Code resent successfully 📩",
+      "incompleteData": "Incomplete data provided",
+      "verificationError": "Failed to verify code",
+      "resendError": "Failed to resend code",
+      "genericError": "Something went wrong"
+    },
+    "errors": {
+      "invalidForm": "Please correct the errors in the form",
+      "loginSuccess": "Logged in successfully",
+      "registerSuccess": "Verification code sent successfully",
+      "verifySuccess": "Account verified successfully",
+      "resendSuccess": "Code resent successfully",
+      "phoneMissing": "Phone number is missing"
+    },
+    "company": {
+      "title": "Company Locations Data",
+      "locationBadge": "Location",
+      "siteName": "Site Name",
+      "siteNamePlaceholder": "Enter site name",
+      "workersCount": "Number of Workers",
+      "workersCountPlaceholder": "Enter number of workers",
+      "city": "City",
+      "cityPlaceholder": "Select city",
+      "address": "Address",
+      "addressPlaceholder": "Enter detailed address",
+      "additionalNotes": "Additional Notes (Optional)",
+      "notesPlaceholder": "Enter any additional notes",
+      "mapTitle": "Identify location on map",
+      "addLocation": "Add another location",
+      "submit": "Save",
+      "required": "This field is required"
+    },
+    "Password": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "currentPasswordPlaceholder": "Enter current password",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Enter new password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm new password",
+      "submit": "Update Password",
+      "required": "This field is required",
+      "currentRequired": "Current password is required",
+      "newRequired": "New password is required",
+      "minNew": "New password must be at least 8 characters",
+      "mismatch": "Passwords do not match",
+      "minCurrent": "Current password must be at least 8 characters"
+    },
+    "profile": {
+      "title": "Profile",
+      "companyName": "Company Name",
+      "companyNamePlaceholder": "Enter company name",
+      "managerName": "Catering Manager Name",
+      "managerNamePlaceholder": "Enter manager name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter phone number",
+      "submit": "Save",
+      "required": "This field is required",
+      "phoneError": "Phone number must be 9 digits",
+      "passwordError": "Password must be at least 8 characters",
+      "nameError": "Name must be at least 2 characters",
+      "companyNameError": "Company name must be at least 2 characters",
+      "imageSizeError": "Image size must be less than 5 MB",
+      "imageTypeError": "Only JPG, PNG, or WEBP images are allowed"
+    },
+    "Support": {
+      "welcome": "Welcome to the El-Eaasha Support Center.",
+      "description": "We are here to help you with everything related to managing meals, locations, and orders. If you face any problem or have a question, contact us through the following ways",
+      "phone": "+20-100-111-000-0",
+      "whatsapp": "Contact via WhatsApp",
+      "email": "support@EL-Eaasha.com"
+    }
+  },
+  "Dashboard": {
+    "appName": "El-Eaasha",
+    "welcome": "Welcome",
+    "stats": {
+      "locations": "Locations Count",
+      "employees": "Total Employees",
+      "totalCost": "Total Cost (This Month)",
+      "orders": "Orders (This Month)",
+      "sites": "Sites",
+      "staff": "Staff",
+      "sar": "SAR"
+    },
+    "todaySummary": {
+      "title": "Today's Order",
+      "mealType": "Meal Type",
+      "totalMeals": "Total Meals Today",
+      "siteName": "Site Name",
+      "deliveryTime": "Delivery Time",
+      "viewDetails": "View Details"
+    },
+    "showMore": "Show More",
+    "workers": "Workers",
+    "city": "City",
+    "site": "Site",
+    "active": "Active",
+    "sar": "SAR",
+    "nav": {
+      "dashboard": "Dashboard",
+      "orders": "Orders",
+      "settings": "Settings",
+      "profile": "Profile",
+      "logout": "Logout"
+    }
+  },
+
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "profile": "Profile",
+    "company": "Company & Locations",
+
+    "settings": "Settings",
+    "changePassword": "Change Password",
+    "support": "Support & Help",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+
+    "logout": "Logout",
+    "deleteAccount": "Delete Account"
+  }
+}
