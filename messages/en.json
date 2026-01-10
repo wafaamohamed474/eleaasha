@@ -197,6 +197,19 @@
     "privacy": "Privacy Policy",
 
     "logout": "Logout",
-    "deleteAccount": "Delete Account"
+    "deleteAccount": "Delete Account",
+
+    "logoutConfirm": {
+      "title": "Confirm Logout",
+      "description": "Are you sure you want to logout?",
+      "confirm": "Yes, Logout",
+      "cancel": "Cancel"
+    },
+    "deleteAccountConfirm": {
+      "title": "Delete Account",
+      "description": "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.",
+      "confirm": "Yes, Delete",
+      "cancel": "Cancel"
+    }
   }
 }

@@ -63,10 +63,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
         description: loginData.message || "Login successful",
       });
       const phoneNumber = form.getValues("phone");
-      const normalizedPhone = `+966${phoneNumber.replace(/^0/, "")}`;
+      const normalizedPhone = `966${phoneNumber.replace(/^0/, "")}`;
       dispatch(updateForm({ phoneNumber: normalizedPhone }));
       dispatch(setStep("VERIFICATION"));
     } else if (isError) {
+      console.log(apiError)
       const errorMessage =
         isError &&
         "data" in (apiError as any) &&
@@ -78,7 +79,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   }, [isSuccess, isError, loginData, apiError, t, dispatch]);
 
   const onSubmit = async (data: LoginInput) => {
-    const normalizedPhone = `+966${data.phone.replace(/^0/, "")}`;
+    const normalizedPhone = `966${data.phone.replace(/^0/, "")}`;
+    console.log(normalizedPhone)
     try {
       await login({
         phone: normalizedPhone,

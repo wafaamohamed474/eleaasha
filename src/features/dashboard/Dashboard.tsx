@@ -21,6 +21,7 @@ import { FaUser } from "react-icons/fa6";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { FaClipboardList } from "react-icons/fa";
 import { RiBuildingFill } from "react-icons/ri";
+import Link from "next/link";
 
 export function Dashboard() {
   const locale = useLocale();
@@ -106,33 +107,18 @@ export function Dashboard() {
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <SectionTitle title={isRTL ? "الوجبات" : "Meals"} />
-          <button className="text-xs font-bold text-(--primary) flex items-center gap-1 hover:underline">
+          <Link href={`/${locale}/dashboard/meals`} className="text-xs font-bold text-(--primary) flex items-center gap-1 hover:underline">
             {isRTL ? "عرض المزيد" : "Show More"}
             {isRTL ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
-          </button>
+          </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {homeData.meals_section.items.map((meal) => (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {homeData.meals_section.items.slice(0, 4).map((meal) => (
             <MealCard
               key={meal.id}
-              image={meal.image}
-              name={meal.name}
-              price={meal.price}
+              item={meal}
             />
           ))}
-          {/* Mock duplicate to fill grid if needed */}
-          {homeData.meals_section.items.length < 4 &&
-            [1, 2, 3].map((i) => (
-              <MealCard
-                key={`mock-${i}`}
-                image={homeData.meals_section.items[0].image}
-                name={homeData.meals_section.items[0].name}
-                price={homeData.meals_section.items[0].price}
-                priceWithoutTax={
-                  homeData.meals_section.items[0].price_without_tax
-                }
-              />
-            ))}
         </div>
       </section>
 
@@ -140,28 +126,18 @@ export function Dashboard() {
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <SectionTitle title={isRTL ? "المواقع" : "Locations"} />
-          <button className="text-xs font-bold text-(--primary) flex items-center gap-1 hover:underline">
+          <Link href={`/${locale}/dashboard/company`} className="text-xs font-bold text-(--primary) flex items-center gap-1 hover:underline">
             {isRTL ? "عرض المزيد" : "Show More"}
             {isRTL ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
-          </button>
+          </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {homeData.locations_management.items.map((location) => (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {homeData.locations_management.items.slice(0, 4).map((location) => (
             <LocationCard
               key={location.id}
-              id={location.id}
-              name={location.name}
+              item={location}
             />
           ))}
-          {/* Mock duplicate to fill grid if needed */}
-          {homeData.locations_management.items.length < 4 &&
-            [1, 2, 3].map((i) => (
-              <LocationCard
-                key={`mock-loc-${i}`}
-                id={i}
-                name={homeData.locations_management.items[0]?.name}
-              />
-            ))}
         </div>
       </section>
     </div>

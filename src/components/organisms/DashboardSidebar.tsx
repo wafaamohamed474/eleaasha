@@ -31,6 +31,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import ConfirmationDialog from "../molecules/ConfirmationDialog";
 
 export default function DashboardSidebar() {
   const t = useTranslations("sidebar");
@@ -38,6 +39,8 @@ export default function DashboardSidebar() {
   const pathname = usePathname();
   const locale = useLocale();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
 
   const mainRoutes = [
     {
@@ -199,6 +202,7 @@ export default function DashboardSidebar() {
       <SidebarFooter className="border-t border-(--secondary-foreground)/10 p-3 space-y-1">
         <SidebarMenuItem className="list-none">
           <SidebarMenuButton
+            onClick={() => setLogoutDialogOpen(true)}
             tooltip={t("logout")}
             className="w-full h-11 px-3 rounded-xl group-data-[state=expanded]:hover:bg-red-50 hover:text-red-600 text-gray-500 transition-all group/logout"
           >
@@ -215,6 +219,7 @@ export default function DashboardSidebar() {
 
         <SidebarMenuItem className="list-none">
           <SidebarMenuButton
+            onClick={() => setDeleteAccountDialogOpen(true)}
             tooltip={t("deleteAccount")}
             className="w-full h-11 px-3 rounded-xl group-data-[state=expanded]:hover:bg-red-100 text-red-500 hover:text-red-700 transition-all group/delete"
           >
@@ -225,6 +230,38 @@ export default function DashboardSidebar() {
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarFooter>
+
+      {/* Logout Confirmation Dialog */}
+      <ConfirmationDialog
+        open={logoutDialogOpen}
+        onOpenChange={setLogoutDialogOpen}
+        title={t("logoutConfirm.title")}
+        description={t("logoutConfirm.description")}
+        confirmText={t("logoutConfirm.confirm")}
+        cancelText={t("logoutConfirm.cancel")}
+        onConfirm={() => {
+          // TODO: Implement logout logic
+          console.log("Logout confirmed");
+          setLogoutDialogOpen(false);
+        }}
+        variant="destructive"
+      />
+
+      {/* Delete Account Confirmation Dialog */}
+      <ConfirmationDialog
+        open={deleteAccountDialogOpen}
+        onOpenChange={setDeleteAccountDialogOpen}
+        title={t("deleteAccountConfirm.title")}
+        description={t("deleteAccountConfirm.description")}
+        confirmText={t("deleteAccountConfirm.confirm")}
+        cancelText={t("deleteAccountConfirm.cancel")}
+        onConfirm={() => {
+          // TODO: Implement delete account logic
+          console.log("Delete account confirmed");
+          setDeleteAccountDialogOpen(false);
+        }}
+        variant="destructive"
+      />
     </Sidebar>
   );
 }

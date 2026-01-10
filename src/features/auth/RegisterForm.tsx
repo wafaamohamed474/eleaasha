@@ -56,7 +56,7 @@ export const RegisterForm: React.FC = () => {
         description: registerData.message || "Registration successful",
       });
       const phoneNumber = watch("phone");
-      const normalizedPhone = `+966${phoneNumber.replace(/^0/, "")}`;
+      const normalizedPhone = `966${phoneNumber.replace(/^0/, "")}`;
       dispatch(updateForm({ phoneNumber: normalizedPhone }));
       dispatch(setStep("VERIFICATION"));
     } else if (isError) {
@@ -71,7 +71,7 @@ export const RegisterForm: React.FC = () => {
   }, [isSuccess, isError, registerData, apiError, t, dispatch]);
 
   const onSubmit = async (data: RegisterInput) => {
-    const normalizedPhone = `+966${data.phone.replace(/^0/, "")}`;
+    const normalizedPhone = `966${data.phone.replace(/^0/, "")}`;
     try {
       await registerUser({
         company_name: data.company_name,

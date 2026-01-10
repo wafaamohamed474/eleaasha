@@ -92,7 +92,7 @@ export const LangSwitch = () => {
             onClick={() => switchLanguage("ar")}
             className={cn(
               "flex items-center gap-1 px-3 text-white   rounded-lg text-sm font-medium transition-colors",
-              locale === "ar" ? "bg-(--primary) " : "hover:bg-white/10"
+              locale === "ar" ? "bg-(--primary)" : "hover:bg-white/10  "
             )}
           >
             <div>
@@ -105,7 +105,9 @@ export const LangSwitch = () => {
               />
             </div>
 
-            <span>AR</span>
+            <span className={cn(auth ? "lg:text-black" : "lg:text-white")}>
+              AR
+            </span>
           </button>
           <button
             onClick={() => switchLanguage("en")}
@@ -125,8 +127,9 @@ export const LangSwitch = () => {
                 className="object-cover px-2 py-1"
               />
             </div>
-
-            <span>EN</span>
+            <span className={cn(auth ? "lg:text-black" : "lg:text-white")}>
+              EN
+            </span>
           </button>
         </div>
       </div>

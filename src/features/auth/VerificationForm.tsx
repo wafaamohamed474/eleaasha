@@ -147,6 +147,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
       fd.append("verificationCode", data.verificationCode);
       fd.append("phone", data.phone);
       fd.append("lang", locale);
+      console.log(fd)
       verifyFormAction(fd);
     });
   };
@@ -156,7 +157,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
       <AuthHeader
         title={t("title")}
         subtitle={t.rich("subtitle", {
-          phone: formData.phoneNumber?.slice(4, 6) + "X XXX XXXX",
+          phone: formData.phoneNumber?.slice(3, 5) + "X XXX XXXX",
           highlight: (chunks) => (
             <span className="text-(--primary) font-semibold">{chunks}</span>
           ),

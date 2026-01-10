@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { NAME_TOKEN_KEY } from "./lib/auth/constants";
+import { NAME_TOKEN_KEY } from "./lib/auth/authServer";
+ 
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;

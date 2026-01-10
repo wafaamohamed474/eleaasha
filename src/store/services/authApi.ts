@@ -4,14 +4,9 @@ import {
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
-  VerifyOtpRequest,
-  VerifyResponse,
-  SendOtpRequest,
-  SendOtpResponse,
   ChangePasswordResponse,
   ChangePasswordRequest,
   UpdateProfileResponse,
-  UpdateProfileRequest,
 } from "@/types/auth";
 import {
   FooterDataResponse,
@@ -19,13 +14,13 @@ import {
   PagesResponse,
   UserInfoResponse,
 } from "@/types/globals";
-import { HomeResponse } from "@/types/dashboard";
-import { getAuthTokenServer } from "@/lib/auth/authServer";
+import { GetAllLocationsResponse, GetAllMealsResponse, HomeResponse } from "@/types/dashboard";
+import { getAuthTokenClient } from "@/lib/auth/authClient";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
-  prepareHeaders: async (headers) => {
-    const token = await getAuthTokenServer();
+  prepareHeaders: (headers) => {
+    const token = getAuthTokenClient();
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
@@ -119,6 +114,20 @@ export const authApi = createApi({
         params: { lang },
       }),
     }),
+     GetAllMeals: builder.query<GetAllMealsResponse, string>({
+      query: (lang) => ({
+        url: "/meals",
+        method: "GET",
+        params: { lang },
+      }),
+    }),
+     GetAllLocations: builder.query<GetAllLocationsResponse, string>({
+      query: (lang) => ({
+        url: "/company/locations",
+        method: "GET",
+        params: { lang },
+      }),
+    }),
   }),
 });
 
@@ -132,4 +141,6 @@ export const {
   useGetNotificationsQuery,
   useGetPagesByTypeQuery,
   useGetHomeDataQuery,
+  useGetAllMealsQuery,
+  useGetAllLocationsQuery,
 } = authApi;

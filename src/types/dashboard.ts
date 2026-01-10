@@ -6,6 +6,16 @@ import { BaseAPIResponse } from "./auth";
 export interface HomeResponse extends BaseAPIResponse {
   data: HomeData;
 }
+export interface GetAllMealsResponse extends BaseAPIResponse {
+  data: MealItem[];
+}
+
+export interface GetAllLocationsResponse extends BaseAPIResponse {
+  data: {
+    locations: LocationItem[];
+    company: Company;
+  };
+}
 
 // ============================
 // Root Data
@@ -58,6 +68,26 @@ export interface TodaySummary {
   last_order: string | null;
 }
 
+export type LastOrder = {
+  id: number;
+  status: "pending" | "completed" | "cancelled" | string;
+  recurrence: "daily" | "weekly" | "monthly" | string;
+  quantity: number;
+  delivery_start_date: string; // YYYY-MM-DD
+  delivery_end_date: string; // YYYY-MM-DD
+  delivery_time_start: string; // "12:30 PM"
+  delivery_time_end: string; // "01:00 PM"
+  notes: string;
+  total: string;
+  invoice_url: string;
+  site: OrderSite;
+  meal: MealItem;
+};
+export type OrderSite = {
+  id: number;
+  name: string;
+  address: string;
+};
 // ============================
 // Stats Cards
 // ============================
@@ -80,10 +110,31 @@ export interface MealItem {
   id: number;
   name: string;
   image: string;
-  price: string;  
-  price_without_tax: string;
+  price: string;
+  price_without_tax?: string;
+  is_favorite?: boolean;
+  is_available?: boolean;
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
+  ingredients?: IngredientItem[];
+  tags?: TagsItem[];
+  ratings?: Ratings | number;
 }
-
+export interface IngredientItem {
+  id: number;
+  name: string;
+}
+export interface TagsItem {
+  id: number;
+  name: string;
+}
+export interface Ratings {
+  count: number;
+  comments_count: number;
+  average: number;
+}
 // ============================
 // Locations Management
 // ============================
@@ -93,10 +144,21 @@ export interface LocationsManagement {
 }
 
 export interface LocationItem {
-  id?: number;
+  id: number;
   name?: string;
+  workers_count?: number;
+  address?: string;
+  city?: string;
+  lat?: number;
+  lng?: number;
+  note?: string;
+  status?: string;
 }
-
+export interface Company {
+  id: number;
+  name: string;
+  number_of_locations: number;
+}
 export interface FinancialAnalysis {
   month_name: string;
   series: FinancialSeriesItem[];

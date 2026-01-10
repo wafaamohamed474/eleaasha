@@ -19,6 +19,8 @@ import { useGetFooterDataQuery } from "@/store/services/authApi";
 import { useDispatch } from "react-redux";
 import { setIsDialogOpen } from "@/store/services/authSlice";
 import { checkAuthStatus } from "@/lib/auth/authClient";
+import { useState } from "react";
+import FooterPolicyDialog from "../molecules/FooterPolicyDialog";
 
 const Footer = () => {
   const t = useTranslations("Footer");
@@ -27,6 +29,10 @@ const Footer = () => {
   const dispatch = useDispatch();
   const { data: footerResponse } = useGetFooterDataQuery(locale);
   const footerData = footerResponse?.data;
+
+  const [policyType, setPolicyType] = useState<"terms" | "privacy" | null>(
+    null
+  );
 
   const getSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {
@@ -176,20 +182,20 @@ const Footer = () => {
                 </li>
               )}
               <li>
-                <Link
-                  href="/privacy"
-                  className="hover:text-(--primary) transition-colors"
+                <button
+                  onClick={() => setPolicyType("privacy")}
+                  className="hover:text-(--primary) transition-colors cursor-pointer"
                 >
                   {t("privacyPolicy")}
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
-                  href="/terms"
-                  className="hover:text-(--primary) transition-colors"
+                <button
+                  onClick={() => setPolicyType("terms")}
+                  className="hover:text-(--primary) transition-colors cursor-pointer"
                 >
                   {t("terms")}
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -235,6 +241,11 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <FooterPolicyDialog
+        type={policyType}
+        isOpen={!!policyType}
+        onClose={() => setPolicyType(null)}
+      />
     </footer>
   );
 };

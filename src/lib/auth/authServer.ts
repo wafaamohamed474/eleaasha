@@ -1,6 +1,6 @@
-"use server"
+
+export const NAME_TOKEN_KEY = "ElEaasha_auth_token_server";
 import { cookies } from "next/headers";
-import { NAME_TOKEN_KEY } from "./constants";
 
 // ===== Helper: Decode JWT Payload =====
 function base64UrlDecode(str: string): string {

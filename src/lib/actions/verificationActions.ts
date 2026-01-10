@@ -1,6 +1,6 @@
 "use server";
 
-import { NAME_TOKEN_KEY } from "@/lib/auth/constants";
+import { NAME_TOKEN_KEY } from "@/lib/auth/authServer";
 import { VerifyResponse } from "@/types/auth";
 import { cookies } from "next/headers";
 

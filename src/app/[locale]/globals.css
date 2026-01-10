@@ -60,6 +60,8 @@
   --shadow-secondary-sm: 0 1px 4px rgba(58, 43, 95, 0.3);
   --shadow-secondary-md: 0 1px 10px rgba(58, 43, 95, 0.4);
   --shadow-secondary-lg: 0 4px 20px rgba(58, 43, 95, 0.45);
+
+  --warning-text: #C0392B;
 }
 
 html {

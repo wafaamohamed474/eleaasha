@@ -32,7 +32,7 @@ export const createVerifySchema = (t: (key: string) => string) =>
     phone: z
       .string()
       .nonempty(t("required"))
-      .regex(/^\+966\d{9}$/, t("phoneError")),
+      .regex(/^966\d{9}$/, t("phoneError")),
   });
 
 export const createPasswordSchema = (t: (key: string) => string) =>
