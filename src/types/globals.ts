@@ -73,3 +73,13 @@ export interface PageItem {
   created_at: string;
   updated_at: string;
 };
+
+export interface CityItem {
+    id: number;
+    name_ar: string;
+    name_en: string;
+    country_id: number;
+}
+export interface GetCitiesResponse extends BaseAPIResponse {
+  data: CityItem[];
+}

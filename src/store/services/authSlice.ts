@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type AuthStep = "LOGIN" | "REGISTER" | "VERIFICATION" | "COMPANY_DATA";
+export type AuthStep =
+  | "LOGIN"
+  | "REGISTER"
+  | "VERIFICATION"
+  | "COMPANY_DATA"
+  | "FORGET_PASSWORD"
+  | "RESET_PASSWORD";
 
 interface AuthState {
   step: AuthStep;
@@ -20,6 +26,7 @@ interface AuthState {
     city?: string;
     address?: string;
     additionalNotes?: string;
+    verificationPurpose?: "default" | "reset_password";
   };
   loading: boolean;
   error: string | null;
@@ -44,14 +51,20 @@ const authSlice = createSlice({
       const newStep = action.payload;
       state.step = newStep;
       state.error = null;
-      
+
       // Clear sensitive/temporary form data when switching between main entry points
       // but keep phoneNumber if moving to VERIFICATION
-      if ((newStep === "LOGIN" || newStep === "REGISTER") && oldStep !== newStep) {
+      if (
+        (newStep === "LOGIN" || newStep === "REGISTER") &&
+        oldStep !== newStep
+      ) {
         state.formData = { phoneNumber: "" };
       }
     },
-    updateForm: (state, action: PayloadAction<Partial<AuthState["formData"]>>) => {
+    updateForm: (
+      state,
+      action: PayloadAction<Partial<AuthState["formData"]>>
+    ) => {
       state.formData = { ...state.formData, ...action.payload };
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -72,5 +85,12 @@ const authSlice = createSlice({
   },
 });
 
-export const { setStep, updateForm, setLoading, setError, setIsDialogOpen, resetAuth } = authSlice.actions;
+export const {
+  setStep,
+  updateForm,
+  setLoading,
+  setError,
+  setIsDialogOpen,
+  resetAuth,
+} = authSlice.actions;
 export default authSlice.reducer;

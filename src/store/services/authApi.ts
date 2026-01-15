@@ -7,14 +7,34 @@ import {
   ChangePasswordResponse,
   ChangePasswordRequest,
   UpdateProfileResponse,
+  ForgetPasswordResponse,
+  ForgetPasswordRequest,
+  resetPasswordRequest,
+  ResetPasswordResponse,
 } from "@/types/auth";
 import {
   FooterDataResponse,
+  GetCitiesResponse,
   NotificationsResponse,
   PagesResponse,
   UserInfoResponse,
 } from "@/types/globals";
-import { GetAllLocationsResponse, GetAllMealsResponse, HomeResponse } from "@/types/dashboard";
+import { HomeResponse } from "@/types/dashboard";
+
+import {
+  AddOrderRequest,
+  AddOrderResponse,
+  DeleteSingleOrderResponse,
+  GetAllOrdersResponse,
+  GetSingleOrderResponse,
+} from "@/types/orders";
+import { GetAllMealsResponse, GetSingleMealResponse } from "@/types/meals";
+import {
+  AddLocationRequest,
+  AddLocationResponse,
+  DeleteSingleLocationResponse,
+  GetAllLocationsResponse,
+} from "@/types/locations";
 import { getAuthTokenClient } from "@/lib/auth/authClient";
 
 const baseQuery = fetchBaseQuery({
@@ -31,7 +51,7 @@ const baseQuery = fetchBaseQuery({
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQuery,
-  tagTypes: ["Profile"],
+  tagTypes: ["Profile", "Location", "Order"],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest & { lang: string }>({
       query: ({ lang, ...credentials }) => ({
@@ -63,6 +83,30 @@ export const authApi = createApi({
         params: { lang },
       }),
     }),
+
+    ForgetPassword: builder.mutation<
+      ForgetPasswordResponse,
+      ForgetPasswordRequest & { lang: string }
+    >({
+      query: ({ lang, ...body }) => ({
+        url: "/forgot-password",
+        method: "POST",
+        body,
+        params: { lang },
+      }),
+    }),
+    ResetPassword: builder.mutation<
+      ResetPasswordResponse,
+      resetPasswordRequest & { lang: string }
+    >({
+      query: ({ lang, ...body }) => ({
+        url: "/reset-password",
+        method: "POST",
+        body,
+        params: { lang },
+      }),
+    }),
+
     GetFooterData: builder.query<FooterDataResponse, string>({
       query: (lang) => ({
         url: "/settings/footer",
@@ -113,17 +157,103 @@ export const authApi = createApi({
         method: "GET",
         params: { lang },
       }),
+      providesTags: ["Location"],
     }),
-     GetAllMeals: builder.query<GetAllMealsResponse, string>({
+    GetAllMeals: builder.query<GetAllMealsResponse, string>({
       query: (lang) => ({
         url: "/meals",
         method: "GET",
         params: { lang },
       }),
     }),
-     GetAllLocations: builder.query<GetAllLocationsResponse, string>({
+    GetSingleMeal: builder.query<
+      GetSingleMealResponse,
+      { lang: string; id: string }
+    >({
+      query: ({ lang, id }) => ({
+        url: `/meals/${id}`,
+        method: "GET",
+        params: { lang },
+      }),
+    }),
+    GetAllLocations: builder.query<GetAllLocationsResponse, string>({
       query: (lang) => ({
         url: "/company/locations",
+        method: "GET",
+        params: { lang },
+      }),
+      providesTags: ["Location"],
+    }),
+    AddLocation: builder.mutation<
+      AddLocationResponse,
+      AddLocationRequest & { lang: string }
+    >({
+      query: ({ lang, ...body }) => ({
+        url: "/company/Add-locations",
+        method: "POST",
+        params: { lang },
+        body,
+      }),
+      invalidatesTags: ["Location"],
+    }),
+    DeleteSingleLocation: builder.mutation<
+      DeleteSingleLocationResponse,
+      { lang: string; id: string }
+    >({
+      query: ({ lang, id }) => ({
+        url: `/company/locations/${id}`,
+        method: "DELETE",
+        params: { lang },
+      }),
+      invalidatesTags: ["Location"],
+    }),
+    GetAllOrders: builder.query<
+      GetAllOrdersResponse,
+      { lang: string; status?: string }
+    >({
+      query: ({ lang, status }) => ({
+        url: "/orders",
+        method: "GET",
+        params: { lang, status },
+      }),
+      providesTags: ["Order"],
+    }),
+    GetSingleOrder: builder.query<
+      GetSingleOrderResponse,
+      { lang: string; id: string }
+    >({
+      query: ({ lang, id }) => ({
+        url: `/orders/${id}`,
+        method: "GET",
+        params: { lang },
+      }),
+    }),
+    CreateOrder: builder.mutation<
+      AddOrderResponse,
+      AddOrderRequest & { lang: string }
+    >({
+      query: ({ lang, ...body }) => ({
+        url: "/orders",
+        method: "POST",
+        params: { lang },
+        body,
+      }),
+      invalidatesTags: ["Order"],
+    }),
+    DeleteSingleOrder: builder.mutation<
+      DeleteSingleOrderResponse,
+      { lang: string; id: string }
+    >({
+      query: ({ lang, id }) => ({
+        url: `/orders/${id}`,
+        method: "DELETE",
+        params: { lang },
+      }),
+      invalidatesTags: ["Order"],
+    }),
+    GetCities: builder.query<GetCitiesResponse, string>({
+      query: (lang) => ({
+        url: "/cities",
         method: "GET",
         params: { lang },
       }),
@@ -143,4 +273,14 @@ export const {
   useGetHomeDataQuery,
   useGetAllMealsQuery,
   useGetAllLocationsQuery,
+  useForgetPasswordMutation,
+  useResetPasswordMutation,
+  useGetSingleOrderQuery,
+  useCreateOrderMutation,
+  useDeleteSingleOrderMutation,
+  useGetSingleMealQuery,
+  useGetAllOrdersQuery,
+  useAddLocationMutation,
+  useDeleteSingleLocationMutation,
+  useGetCitiesQuery,
 } = authApi;

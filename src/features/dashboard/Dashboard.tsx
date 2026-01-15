@@ -22,10 +22,13 @@ import { BsCurrencyDollar } from "react-icons/bs";
 import { FaClipboardList } from "react-icons/fa";
 import { RiBuildingFill } from "react-icons/ri";
 import Link from "next/link";
+import EmptySection from "@/components/molecules/EmptySection";
+import { DashboardCarousel } from "@/components/molecules/DashboardCarousel";
 
 export function Dashboard() {
   const locale = useLocale();
   const t = useTranslations("Dashboard");
+  const c = useTranslations("Company");
   const { data: homeResponse, isLoading } = useGetHomeDataQuery(locale);
   const isRTL = locale === "ar";
 
@@ -45,6 +48,7 @@ export function Dashboard() {
       iconColor: "text-(--primary)",
       shadow: "shadow-[var(--shadow-primary-sm)]",
       trend: "up" as const,
+      href: `/${locale}/dashboard/company`,
     },
     {
       title: isRTL ? "عدد المواقع" : "Locations Count",
@@ -56,6 +60,7 @@ export function Dashboard() {
       iconColor: "text-(--secondary)",
       shadow: "shadow-[var(--shadow-secondary-sm)]",
       trend: "down" as const,
+      href: `/${locale}/dashboard/company`,
     },
 
     {
@@ -68,6 +73,7 @@ export function Dashboard() {
       iconColor: "text-(--secondary)",
       shadow: "shadow-[var(--shadow-secondary-sm)]",
       trend: "down" as const,
+      href: `/${locale}/dashboard/orders`,
     },
     {
       title: isRTL ? "إجمالي التكلفة (هذا الشهر)" : "Total Cost (This Month)",
@@ -82,18 +88,33 @@ export function Dashboard() {
     },
   ];
 
+  console.log(homeData.today_summary.last_order);
+
   return (
     <div className="flex flex-col gap-8">
       {/* Top Stats and Summary Section */}
       <div className="flex flex-col xl:flex-row gap-6">
         {/* Left:  Banners & Summary */}
-        <div className="w-full xl:w-5/12 flex flex-col gap-4">
-          <SectionTitle title={isRTL ? "الإعلانات" : "Banners"} />
-          <BannersSlider items={homeData.banners_section.items} />
-        </div>
+        {homeData.today_summary.last_order ? (
+          <div className="w-full xl:w-1/2 flex flex-col gap-4">
+            <SectionTitle
+              title={
+                isRTL
+                  ? "تابع إحصائياتك ومبيعاتك اليومية"
+                  : "Track your daily statistics and sales"
+              }
+            />
+            <TodaySummaryCard summary={homeData.today_summary} />
+          </div>
+        ) : (
+          <div className="w-full xl:w-1/2 flex flex-col gap-4">
+            <SectionTitle title={isRTL ? "الإعلانات" : "Banners"} />
+            <BannersSlider items={homeData.banners_section.items} />
+          </div>
+        )}
 
         {/* Right: Stats Grid */}
-        <div className="w-full xl:w-7/12 flex flex-col gap-4">
+        <div className="flex min-w-1/2 flex-col gap-4">
           <SectionTitle title={isRTL ? "الاحصائيات" : "Statistics"} />
           <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-2 gap-4 ">
             {stats.map((stat, idx) => (
@@ -107,38 +128,50 @@ export function Dashboard() {
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <SectionTitle title={isRTL ? "الوجبات" : "Meals"} />
-          <Link href={`/${locale}/dashboard/meals`} className="text-xs font-bold text-(--primary) flex items-center gap-1 hover:underline">
+          <Link
+            href={`/${locale}/dashboard/meals`}
+            className="text-xs font-bold text-(--primary) flex items-center gap-1 hover:underline"
+          >
             {isRTL ? "عرض المزيد" : "Show More"}
             {isRTL ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {homeData.meals_section.items.slice(0, 4).map((meal) => (
-            <MealCard
-              key={meal.id}
-              item={meal}
-            />
+        <DashboardCarousel>
+          {homeData.meals_section.items.map((meal) => (
+            <MealCard key={meal.id} item={meal} isHome={true} />
           ))}
-        </div>
+        </DashboardCarousel>
       </section>
 
       {/* Locations Section */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <SectionTitle title={isRTL ? "المواقع" : "Locations"} />
-          <Link href={`/${locale}/dashboard/company`} className="text-xs font-bold text-(--primary) flex items-center gap-1 hover:underline">
-            {isRTL ? "عرض المزيد" : "Show More"}
-            {isRTL ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
-          </Link>
+          {homeData.locations_management.items.length > 0 && (
+            <Link
+              href={`/${locale}/dashboard/company`}
+              className="text-xs font-bold text-(--primary) flex items-center gap-1 hover:underline"
+            >
+              {isRTL ? "عرض المزيد" : "Show More"}
+              {isRTL ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
+            </Link>
+          )}
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {homeData.locations_management.items.slice(0, 4).map((location) => (
-            <LocationCard
-              key={location.id}
-              item={location}
-            />
-          ))}
-        </div>
+        {homeData.locations_management.items.length > 0 ? (
+          <DashboardCarousel>
+            {homeData.locations_management.items.map((location) => (
+              <LocationCard key={location.id} item={location} />
+            ))}
+          </DashboardCarousel>
+        ) : (
+          <EmptySection
+            title={c("noLocations")}
+            desc={c("noLocationsMsg")}
+            btnLabel={c("Add New Location")}
+            href={`/${locale}/dashboard/company/create`}
+            className="py-0!"
+          />
+        )}
       </section>
     </div>
   );

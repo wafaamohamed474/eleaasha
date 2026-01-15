@@ -7,6 +7,8 @@ import { setStep, AuthStep } from "@/store/services/authSlice";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
 import { VerificationForm } from "./VerificationForm";
+import { ForgetPasswordForm } from "./ForgetPasswordForm";
+import { ResetPasswordForm } from "./ResetPasswordForm";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface AuthStepsProps {
@@ -14,7 +16,10 @@ interface AuthStepsProps {
   onSuccess?: () => void;
 }
 
-export const AuthSteps: React.FC<AuthStepsProps> = ({ initialStep, onSuccess }) => {
+export const AuthSteps: React.FC<AuthStepsProps> = ({
+  initialStep,
+  onSuccess,
+}) => {
   const dispatch = useDispatch();
   const { step } = useSelector((state: RootState) => state.auth);
 
@@ -32,6 +37,10 @@ export const AuthSteps: React.FC<AuthStepsProps> = ({ initialStep, onSuccess }) 
         return <RegisterForm />;
       case "VERIFICATION":
         return <VerificationForm onSuccess={onSuccess} />;
+      case "FORGET_PASSWORD":
+        return <ForgetPasswordForm onSuccess={onSuccess} />;
+      case "RESET_PASSWORD":
+        return <ResetPasswordForm onSuccess={onSuccess} />;
       default:
         return <LoginForm onSuccess={onSuccess} />;
     }

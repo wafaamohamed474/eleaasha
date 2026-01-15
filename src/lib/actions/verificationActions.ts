@@ -1,7 +1,7 @@
 "use server";
 
 import { NAME_TOKEN_KEY } from "@/lib/auth/authServer";
-import { VerifyResponse } from "@/types/auth";
+import { SendOtpResponse, VerifyResponse } from "@/types/auth";
 import { cookies } from "next/headers";
 
 const API_URL =
@@ -11,6 +11,7 @@ const API_URL =
 export async function verifyOtpAction(prevState: any, formData: FormData) {
   const code = formData.get("verificationCode")?.toString();
   const identifier = formData.get("phone")?.toString();
+  const purpose = formData.get("purpose")?.toString() || "default";
 
   const lang = formData.get("lang")?.toString() || "ar";
 
@@ -22,7 +23,7 @@ export async function verifyOtpAction(prevState: any, formData: FormData) {
     const res = await fetch(`${API_URL}/verify-otp?lang=${lang}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, identifier, purpose: "default" }),
+      body: JSON.stringify({ code, identifier, purpose }),
       cache: "no-store",
     });
 
@@ -36,7 +37,9 @@ export async function verifyOtpAction(prevState: any, formData: FormData) {
       };
     }
 
-    if (data?.data?.token) {
+    // Only set token for default purpose (login/register)
+    // For reset_password, we don't set the token yet
+    if (data?.data?.token && purpose === "default") {
       const cookieStore = await cookies();
       cookieStore.set(NAME_TOKEN_KEY, data?.data?.token || "", {
         httpOnly: true,
@@ -63,6 +66,7 @@ export async function verifyOtpAction(prevState: any, formData: FormData) {
 export async function resendOtpAction(prevState: any, formData: FormData) {
   const identifier = formData.get("phone")?.toString();
   const lang = formData.get("lang")?.toString() || "ar";
+  const purpose = formData.get("purpose")?.toString() || "default";
 
   if (!identifier) {
     return { success: false, error: "phoneError" };
@@ -72,11 +76,11 @@ export async function resendOtpAction(prevState: any, formData: FormData) {
     const res = await fetch(`${API_URL}/send-otp?lang=${lang}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ identifier, purpose: "default" }),
+      body: JSON.stringify({ identifier, purpose }),
       cache: "no-store",
     });
 
-    const data = await res.json();
+    const data : SendOtpResponse = await res.json();
 
     if (!res.ok) {
       return {

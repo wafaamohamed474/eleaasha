@@ -1,15 +1,13 @@
 import Image from "next/image";
 import { useLocale } from "next-intl";
-import {
-  Calendar,
-  Utensils,
-  Users,
-  MapPin,
-  Clock,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { FaHashtag, FaClock } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+import { PiForkKnifeFill } from "react-icons/pi";
+import placeholderImg from "@/assets/images/Placeholder_view_vector.svg.png";
 import { TodaySummary } from "@/types/dashboard";
+import Link from "next/link";
+import { formatTimeToArabic } from "@/utils/time";
 
 interface TodaySummaryCardProps {
   summary: TodaySummary;
@@ -19,58 +17,82 @@ export default function TodaySummaryCard({ summary }: TodaySummaryCardProps) {
   const locale = useLocale();
   const isRTL = locale === "ar";
 
-  return (
-    <div className="bg-(--primary) rounded-3xl p-6 text-white flex flex-col md:flex-row gap-6 items-center shadow-lg shadow-orange-200/50 relative overflow-hidden">
-      {/* Image Side */}
-      <div className="w-full md:w-1/3 aspect-square relative rounded-2xl overflow-hidden shadow-xl">
-        <Image
-          src="https://eaasha.computinggate.com/uploads/banners/1733230897_0.png" // Fallback for demo, should be dynamic if possible
-          alt="Order Summary"
-          fill
-          className="object-cover"
-        />
-      </div>
+  const lastOrder = summary.last_order;
 
+  const formattedStartTime =
+    isRTL && lastOrder?.delivery_time_start
+      ? formatTimeToArabic(lastOrder.delivery_time_start)
+      : lastOrder?.delivery_time_start;
+
+  const formattedEndTime =
+    isRTL && lastOrder?.delivery_time_end
+      ? formatTimeToArabic(lastOrder.delivery_time_end)
+      : lastOrder?.delivery_time_end;
+
+  return (
+    <div
+      className="bg-(--primary) rounded-3xl py-4 px-6 text-white flex flex-col md:flex-row gap-6 
+    items-center shadow-lg shadow-(--shadow-primary-lg) relative overflow-hidden"
+    >
       {/* Details Side */}
-      <div className="w-full md:w-2/3 flex flex-col gap-5 py-2">
-        <div className="flex items-center justify-between">
-          <div className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full flex items-center gap-2 text-xs font-bold">
+      <div className="w-full md:w-2/3 flex flex-col justify-start items-start gap-3 py-2">
+        <div className="flex    ">
+          <div className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 text-xs font-bold">
             <Calendar size={14} />
             {isRTL ? "طلب اليوم" : "Today's Order"}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-1 w-full">
           <DetailItem
-            icon={Utensils}
+            icon={PiForkKnifeFill}
             label={isRTL ? "نوع الوجبة" : "Meal Type"}
-            value={summary.top_meal_name || "---"}
+            value={lastOrder?.meal?.name || "---"}
             isRTL={isRTL}
           />
           <DetailItem
-            icon={Users}
+            icon={FaHashtag}
             label={isRTL ? "عدد الوجبات اليوم" : "Total Meals"}
-            value={summary.num_of_meals.toString()}
+            value={lastOrder?.quantity.toString() || "---"}
             isRTL={isRTL}
           />
           <DetailItem
-            icon={MapPin}
+            icon={FaLocationDot}
             label={isRTL ? "اسم الموقع" : "Site Name"}
-            value={summary.site_name || "---"}
+            value={lastOrder?.site?.name || "---"}
             isRTL={isRTL}
           />
           <DetailItem
-            icon={Clock}
+            icon={FaClock}
             label={isRTL ? "موعد التسليم" : "Delivery Time"}
-            value={`${summary.next_delivery_time} - ${summary.next_delivery_time_end}`}
+            value={`${formattedStartTime || "---"} : ${
+              formattedEndTime || "---"
+            }`}
             isRTL={isRTL}
           />
         </div>
 
-        <button className="mt-2 w-full sm:w-fit bg-white text-orange-500 px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm hover:bg-orange-50 transition-colors uppercase tracking-wider">
-          {isRTL ? "عرض التفاصيل" : "View Details"}
-          {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+        <button
+          className="mt-1   sm:w-fit bg-white 
+        text-(--primary) px-6 py-2.5 rounded-xl text-xs font-bold flex  shadow-sm hover:bg-opacity-10  transition-colors   tracking-wider"
+        >
+          <Link
+            href={`/${locale}/dashboard/orders/${lastOrder?.id}`}
+            className="flex items-center gap-2"
+          >
+            {isRTL ? "عرض التفاصيل" : "View Details"}
+            {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+          </Link>
         </button>
+      </div>
+      {/* Image Side */}
+      <div className="w-full max-w-5/12 hidden md:block  aspect-square relative rounded-2xl overflow-hidden shadow-xl">
+        <Image
+          src={lastOrder?.meal?.image || placeholderImg}
+          alt="Order Summary"
+          fill
+          className="object-cover"
+        />
       </div>
     </div>
   );
@@ -88,23 +110,13 @@ function DetailItem({
   isRTL: boolean;
 }) {
   return (
-    <div
-      className={cn(
-        "flex items-center gap-3",
-        isRTL ? "flex-row-reverse" : "flex-row"
-      )}
-    >
-      <div className="p-2 bg-white/10 rounded-lg">
+    <div className={cn("flex items-center gap-1 w-full")}>
+      <div className="p-1">
         <Icon size={16} className="text-white" />
       </div>
-      <div
-        className={cn(
-          "flex flex-col gap-0.5",
-          isRTL ? "items-end" : "items-start"
-        )}
-      >
-        <span className="text-[10px] text-white/70 font-medium">{label}</span>
-        <span className="text-sm font-bold truncate max-w-[150px]">
+      <div className={cn("flex items-center justify-start w-full")}>
+        <span className="text-[10px] text-white font-medium ">{label} : </span>
+        <span className="text-[10px] font-medium truncate lg:max-w-[150px] ">
           {value}
         </span>
       </div>

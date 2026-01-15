@@ -2,6 +2,7 @@ import { LucideIcon } from "lucide-react";
 import { IconType } from "react-icons";
 import { cn } from "@/lib/utils";
 import { IoMdTrendingDown } from "react-icons/io";
+import Link from "next/link";
 
 interface StatsCardProps {
   title: string;
@@ -11,6 +12,7 @@ interface StatsCardProps {
   iconBg?: string;
   trend?: "up" | "down";
   shadow?: string;
+  href?: string;
 }
 
 export default function StatsCard({
@@ -21,12 +23,14 @@ export default function StatsCard({
   iconBg = "bg-primary",
   trend = "up",
   shadow,
+  href,
 }: StatsCardProps) {
-  return (
+  const content = (
     <div
       className={cn(
-        "bg-white rounded-2xl p-4 border border-gray-50 flex flex-col gap-4",
-        shadow
+        "bg-white rounded-2xl p-4 border border-gray-50 flex flex-col gap-4 transition-all duration-200",
+        shadow,
+        href && "hover:shadow-md cursor-pointer hover:border-(--primary)/20"
       )}
     >
       <div className="flex items-start justify-between w-full">
@@ -53,4 +57,14 @@ export default function StatsCard({
       </div>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className="block group">
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }

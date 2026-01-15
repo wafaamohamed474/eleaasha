@@ -1,43 +1,43 @@
 "use client";
-import { LocationItem } from "@/types/dashboard";
+import { LocationItem } from "@/types/locations";
 import { MapPin, Users, Building2, Trash2 } from "lucide-react";
 import { useLocale } from "next-intl";
 import { FaCity } from "react-icons/fa";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import ConfirmationDialog from "./ConfirmationDialog";
+import { useDeleteSingleLocationMutation } from "@/store/services/authApi";
+import { toast } from "sonner";
 
 interface LocationCardProps {
   item: LocationItem;
   isNotHome?: boolean;
-  onDelete?: (id: number) => void;
 }
 
-export default function LocationCard({
-  item,
-  isNotHome,
-  onDelete,
-}: LocationCardProps) {
+export default function LocationCard({ item, isNotHome }: LocationCardProps) {
   const locale = useLocale();
   const isRTL = locale === "ar";
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-
   const handleDeleteClick = () => {
     setShowDeleteDialog(true);
   };
 
+  const [deleteLocation, { isLoading }] = useDeleteSingleLocationMutation({});
   const handleConfirmDelete = async () => {
-    setIsDeleting(true);
     try {
-      if (onDelete) {
-        await onDelete(item.id);
-      }
+      const res = await deleteLocation({
+        id: item.id.toString(),
+        lang: locale,
+      }).unwrap();
+
+      toast.success("", {
+        description: res?.message || "Location deleted successfully",
+      });
+
       setShowDeleteDialog(false);
-    } catch (error) {
-      console.error("Failed to delete location:", error);
-    } finally {
-      setIsDeleting(false);
+    } catch (err) {
+      console.error("Failed to delete location:", err);
+      toast.error("", { description: "Failed to delete location" });
     }
   };
 
@@ -46,7 +46,7 @@ export default function LocationCard({
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-50 flex flex-col gap-5 group hover:shadow-[var(--shadow-primary-sm)] transition-colors">
         <div className="flex items-center justify-between">
           {/* Location ID Badge */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-500 text-white text-[10px] font-bold shadow-sm">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-(--primary) text-white text-[10px] font-bold shadow-sm">
             <Building2 size={12} />
             {item.name ?? ""}
           </div>
@@ -143,7 +143,7 @@ export default function LocationCard({
         cancelText={isRTL ? "إلغاء" : "Cancel"}
         onConfirm={handleConfirmDelete}
         variant="destructive"
-        isLoading={isDeleting}
+        isLoading={isLoading}
       />
     </>
   );

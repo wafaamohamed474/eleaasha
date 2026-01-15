@@ -5,10 +5,11 @@ import { Eye, EyeOff, LucideIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label"; // I should probably add label as well if not there, but let's see if I have it. Actually npx shadcn add label might be needed.
 import { useTranslations } from "next-intl";
+import { IconType } from "react-icons";
 
 interface AuthInputProps extends React.ComponentProps<"input"> {
   label: string;
-  icon?: LucideIcon;
+  icon?: LucideIcon | IconType;
   error?: string;
   isPassword?: boolean;
   phonePrefix?: string;

@@ -7,7 +7,7 @@ import { AuthHeader } from "@/components/ui/AuthHeader";
 import { toast } from "sonner";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/Store";
-import { updateForm, resetAuth } from "@/store/services/authSlice";
+import { updateForm, resetAuth, setStep } from "@/store/services/authSlice";
 import { cn } from "@/lib/utils";
 import {
   InputOTP,
@@ -36,8 +36,6 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
   const dispatch = useDispatch();
   const { formData } = useSelector((state: RootState) => state.auth);
   const [timeLeft, setTimeLeft] = useState(59);
-
-  // Server Action State
   const [verifyState, verifyFormAction, isVerifyPending] = useActionState(
     verifyOtpAction,
     null
@@ -101,13 +99,29 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
       });
       if (onSuccess) onSuccess();
 
-      setAuthTokenClient(verifyState.data.token);
-      dispatch(resetAuth());
-      router.push(`/${locale}/dashboard`);
+      const purpose = formData.verificationPurpose || "default";
+      console.log("purpose", purpose);
+      if (purpose === "reset_password") {
+        // For password reset, go to reset password form
+        dispatch(setStep("RESET_PASSWORD"));
+      } else {
+        // For default (login/register), set token and go to dashboard
+        setAuthTokenClient(verifyState.data.token);
+        dispatch(resetAuth());
+        router.push(`/${locale}/dashboard`);
+      }
     } else if (verifyState?.error) {
       toast.error(getTranslatedMessage(verifyState.error));
     }
-  }, [verifyState, t, onSuccess, router, locale, dispatch]);
+  }, [
+    verifyState,
+    t,
+    onSuccess,
+    router,
+    locale,
+    dispatch,
+    formData.verificationPurpose,
+  ]);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -129,6 +143,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
       const fd = new FormData();
       fd.append("phone", formData.phoneNumber);
       fd.append("lang", locale);
+      fd.append("purpose", formData.verificationPurpose || "default");
       const res = await resendOtpAction(null, fd);
       if (res.success) {
         toast.success(getTranslatedMessage(res.message));
@@ -147,7 +162,8 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
       fd.append("verificationCode", data.verificationCode);
       fd.append("phone", data.phone);
       fd.append("lang", locale);
-      console.log(fd)
+      fd.append("purpose", formData.verificationPurpose || "default");
+      console.log("purpose on submit", formData.verificationPurpose);
       verifyFormAction(fd);
     });
   };

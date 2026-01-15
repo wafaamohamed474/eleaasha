@@ -53,6 +53,32 @@ export const createPasswordSchema = (t: (key: string) => string) =>
       path: ["confirm_password"],
     });
 
+export const createResetPasswordSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      phone: z
+        .string()
+        .nonempty(t("required"))
+        .regex(/^966\d{9}$/, t("phoneError")),
+      new_password: z.string().nonempty(t("newRequired")).min(8, t("minNew")),
+      new_password_confirmation: z
+        .string()
+        .nonempty(t("newRequired"))
+        .min(8, t("minNew")),
+    })
+    .refine((data) => data.new_password === data.new_password_confirmation, {
+      message: t("mismatch"),
+      path: ["new_password_confirmation"],
+    });
+
+export const createForgetPasswordSchema = (t: (key: string) => string) =>
+  z.object({
+    phone: z
+      .string()
+      .nonempty(t("required"))
+      .regex(/^\d{9}$/, t("phoneError")),
+  });
+
 export const createProfileSchema = (t: (key: string) => string) =>
   z.object({
     company_name: z.string().min(2, t("companyNameError")).optional(),
@@ -84,3 +110,9 @@ export type RegisterInput = z.infer<ReturnType<typeof createRegisterSchema>>;
 export type VerifyInput = z.infer<ReturnType<typeof createVerifySchema>>;
 export type PasswordInput = z.infer<ReturnType<typeof createPasswordSchema>>;
 export type ProfileInput = z.infer<ReturnType<typeof createProfileSchema>>;
+export type ForgetPasswordInput = z.infer<
+  ReturnType<typeof createForgetPasswordSchema>
+>;
+export type ResetPasswordInput = z.infer<
+  ReturnType<typeof createResetPasswordSchema>
+>;

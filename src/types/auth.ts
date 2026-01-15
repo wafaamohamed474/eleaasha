@@ -21,6 +21,7 @@ export type User = {
 export type AuthData = {
   token: string;
   user: User;
+  action?: string;
 };
 
 export interface BaseAPIResponse {
@@ -43,14 +44,23 @@ export interface VerifyResponse extends BaseAPIResponse {
 export interface SendOtpResponse extends BaseAPIResponse {
   data: {
     action: "otp_sent" | string;
-    purpose: "default" | string;
+    purpose: "default" | "reset_password";
   };
 }
 export interface ChangePasswordResponse extends BaseAPIResponse {
   data: any;
 }
+export interface ForgetPasswordResponse extends BaseAPIResponse {
+  data: {
+    action: "otp_sent" | string;
+    purpose: "reset_password" | string;
+  };
+}
+export interface ResetPasswordResponse extends BaseAPIResponse {
+  data: any;
+}
 export interface UpdateProfileResponse extends BaseAPIResponse {
-  data:  {
+  data: {
     user: User;
   };
 }
@@ -84,6 +94,15 @@ export interface ChangePasswordRequest {
   current_password: string;
   new_password: string;
   confirm_password: string;
+}
+
+export interface resetPasswordRequest {
+  phone: string;
+  new_password: string;
+  new_password_confirmation: string;
+}
+export interface ForgetPasswordRequest {
+  phone: string;
 }
 
 export interface UpdateProfileRequest {

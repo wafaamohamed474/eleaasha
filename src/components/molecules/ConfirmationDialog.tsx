@@ -78,7 +78,9 @@ export default function ConfirmationDialog({
             {description}
           </DialogDescription>
           {warningText && (
-            <p className="text-xs md:text-sm text-(--warning-text) font-normal">{warningText}</p>
+            <p className="text-xs md:text-sm text-(--warning-text) font-normal">
+              {warningText}
+            </p>
           )}
         </DialogHeader>
 
