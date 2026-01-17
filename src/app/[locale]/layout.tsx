@@ -1,12 +1,53 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
+import { NextIntlClientProvider } from "next-intl";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Cairo, Poppins } from "next/font/google";
 import "./globals.css";
-import { ReactNode } from 'react';
-import { notFound } from 'next/navigation';
-import Navbar from '@/components/organisms/Navbar';
+import { ReactNode } from "react";
+import { notFound } from "next/navigation";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthDialog } from '@/components/ui/AuthDialog';
+import { AuthDialog } from "@/components/ui/AuthDialog";
+import { Metadata, Viewport } from "next";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+
+  return {
+    title: t("title"),
+    description: t("description"),
+    keywords: t("keywords"),
+    icons: {
+      icon: "/logo.png",
+      shortcut: "/logo.png",
+      apple: "/logo.png",
+    },
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      type: "website",
+      locale: locale === "ar" ? "ar_SA" : "en_US",
+      images: [
+        {
+          url: "/logo.png",
+          width: 800,
+          height: 600,
+          alt: t("title"),
+        },
+      ],
+    },
+  };
+}
 
 const cairo = Cairo({
   subsets: ["arabic"],
@@ -25,7 +66,7 @@ type RootLayoutProps = {
   params: Promise<{ locale: string }>;
 };
 
-import { StoreProvider } from '@/store/StoreProvider';
+import { StoreProvider } from "@/store/StoreProvider";
 
 export default async function RootLayout({
   children,
@@ -48,9 +89,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body
-        className={`${fontVariable} ${fontClass} antialiased`}
-      >
+      <body className={`${fontVariable} ${fontClass} antialiased`}>
         <StoreProvider>
           <NextIntlClientProvider messages={messages} locale={locale}>
             {children}

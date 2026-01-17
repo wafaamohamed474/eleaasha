@@ -54,11 +54,11 @@ export default function MealCard({ item, isHome }: MealCardProps) {
         </div>
 
         <div className="p-3 md:p-4 flex flex-col gap-1 md:gap-2">
-          <h3 className="text-[10px] md:text-xs font-semibold text-black  w-full">
+          <h3 className="text-[10px] md:text-xs font-semibold text-black  w-full line-clamp-1">
             {item.name}
           </h3>
-          <div className="flex items-center justify-between   md:gap-2 text-xs">
-            <span className="text-[10px] md:text-xs text-(--primary) font-bold">
+          <div className="flex items-center justify-between  md:gap-2 text-xs">
+            <span className="text-[8px] md:text-xs text-(--primary) font-bold">
               {item.price} {t("sar")}
             </span>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Logo from "@/assets/images/AboutImg.png";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -15,6 +15,14 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import {
+  useDeleteAccountMutation,
+  useLogoutMutation,
+} from "@/store/services/authApi";
+import {
+  getAuthTokenClient,
+  removeAuthTokenClient,
+} from "@/lib/auth/authClient";
 
 import { useLocale, useTranslations } from "next-intl";
 import SidebarItem from "../molecules/SidebarItem";
@@ -36,11 +44,42 @@ import ConfirmationDialog from "../molecules/ConfirmationDialog";
 export default function DashboardSidebar() {
   const t = useTranslations("sidebar");
   const isMobile = useIsMobile();
+  const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
+  const [deleteAccount] = useDeleteAccountMutation();
+  const [logoutMutation] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation(locale).unwrap();
+    } catch (error) {
+      console.log("Logout error:", error);
+    } finally {
+      removeAuthTokenClient();
+      await fetch("/api/logout", { method: "POST" });
+      setLogoutDialogOpen(false);
+      router.push(`/${locale}/`);
+      router.refresh();
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount(locale).unwrap();
+    } catch (error) {
+      console.log("Delete account error:", error);
+    } finally {
+      removeAuthTokenClient();
+      await fetch("/api/logout", { method: "POST" });
+      setDeleteAccountDialogOpen(false);
+      router.push(`/${locale}/`);
+      router.refresh();
+    }
+  };
 
   const mainRoutes = [
     {
@@ -239,11 +278,7 @@ export default function DashboardSidebar() {
         description={t("logoutConfirm.description")}
         confirmText={t("logoutConfirm.confirm")}
         cancelText={t("logoutConfirm.cancel")}
-        onConfirm={() => {
-          // TODO: Implement logout logic
-          console.log("Logout confirmed");
-          setLogoutDialogOpen(false);
-        }}
+        onConfirm={handleLogout}
         variant="destructive"
       />
 
@@ -255,11 +290,7 @@ export default function DashboardSidebar() {
         description={t("deleteAccountConfirm.description")}
         confirmText={t("deleteAccountConfirm.confirm")}
         cancelText={t("deleteAccountConfirm.cancel")}
-        onConfirm={() => {
-          // TODO: Implement delete account logic
-          console.log("Delete account confirmed");
-          setDeleteAccountDialogOpen(false);
-        }}
+        onConfirm={handleDeleteAccount}
         variant="destructive"
       />
     </Sidebar>

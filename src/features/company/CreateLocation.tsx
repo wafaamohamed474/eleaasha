@@ -1,9 +1,17 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Loader2, Plus } from "lucide-react";
+import {
+  Building2,
+  Info,
+  Loader2,
+  MapPin,
+  Plus,
+  Text,
+  User,
+} from "lucide-react";
 
 import { AuthInput } from "@/components/ui/AuthInput";
 import { Button } from "@/components/ui/button";
@@ -17,25 +25,40 @@ import {
   createLocationSchema,
 } from "@/lib/schemas/locationSchema";
 import { useLocale } from "next-intl";
+import LocationMap from "@/components/molecules/LocationMap";
+import { IoIosListBox } from "react-icons/io";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function CreateLocation() {
   const t = useTranslations("Company");
   const locale = useLocale();
+  const router = useRouter();
+  const isRTL = locale === "ar";
   const [addLocation, { isLoading }] = useAddLocationMutation();
   const { data: citiesData, isLoading: isCitiesLoading } =
-    useGetCitiesQuery("ar");
+    useGetCitiesQuery(locale);
 
   const schema = createLocationSchema(t);
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid },
+    setValue,
+    control,
+    formState: { errors },
   } = useForm<LocationInput>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as any,
     defaultValues: {
       name: "",
-      workers_count: 0,
+      workers_count: undefined,
       address: "",
       city_id: undefined,
       latitude: undefined,
@@ -48,18 +71,44 @@ export default function CreateLocation() {
     try {
       await addLocation({
         ...data,
-        lang: "ar",
+        lang: locale,
       }).unwrap();
       toast.success(t("Location added successfully"));
+
       reset();
+      router.push(`/${locale}/dashboard/company`);
     } catch (error: any) {
       toast.error(error?.data?.message || t("Something went wrong"));
     }
   };
 
+  const handleMapSelect = (loc: {
+    lat: number;
+    lng: number;
+    address: string;
+    city: string;
+  }) => {
+    setValue("latitude", loc.lat, { shouldValidate: true });
+    setValue("longitude", loc.lng, { shouldValidate: true });
+
+    // Map city name to ID
+    if (citiesData?.data) {
+      const city = citiesData.data.find(
+        (c) =>
+          c.name_ar.includes(loc.city) ||
+          c.name_en.toLowerCase().includes(loc.city.toLowerCase()) ||
+          loc.city.includes(c.name_ar) ||
+          loc.city.toLowerCase().includes(c.name_en.toLowerCase())
+      );
+      if (city) {
+        setValue("city_id", city.id, { shouldValidate: true });
+      }
+    }
+  };
+
   return (
-    <div className="p-6 bg-white rounded-lg shadow-sm">
-      <h1 className="text-xl font-bold mb-6 text-center">
+    <div className="sec-class">
+      <h1 className="text-base font-semibold lg:text-xl lg:font-bold mb-6 text-center">
         {t("Add New Location")}
       </h1>
 
@@ -70,6 +119,8 @@ export default function CreateLocation() {
             label={t("Location Name")}
             placeholder={t("Enter location name")}
             error={errors.name?.message}
+            className=" lg:placeholder:text-sm"
+            icon={Building2}
             {...register("name")}
           />
 
@@ -79,6 +130,8 @@ export default function CreateLocation() {
             type="number"
             placeholder={t("Enter workers count")}
             error={errors.workers_count?.message}
+            className=" lg:placeholder:text-sm"
+            icon={User}
             {...register("workers_count")}
           />
 
@@ -87,89 +140,123 @@ export default function CreateLocation() {
             label={t("Address")}
             placeholder={t("Enter specific address")}
             error={errors.address?.message}
+            className=" lg:placeholder:text-sm"
+            icon={MapPin}
             {...register("address")}
           />
-
-          {/* City - Styled Native Select */}
-          <div className="flex flex-col gap-2 w-full">
+          {/* City dropdown */}
+          <div className="space-y-2 w-full">
             <Label className="text-xs font-semibold text-(--label-text)">
               {t("City")}
             </Label>
-            <select
-              className={`
-                  h-12 w-full rounded-md border bg-(--input-bg) px-3 py-2 text-xs md:text-sm lg:text-base ring-offset-background 
-                  file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground 
-                  focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50
-                  border-transparent transition-all duration-200 hover:bg-white hover:border-(--secondary)/20
-                  focus-visible:bg-white focus-visible:border-(--secondary)
-                  ${
-                    errors.city_id
-                      ? "border-(--error) focus-visible:border-(--error)"
-                      : ""
-                  }
-                `}
-              disabled={isCitiesLoading}
-              {...register("city_id")}
-            >
-              <option value="" disabled selected>
-                {t("Select City")}
-              </option>
-              {citiesData?.data?.map((city) => (
-                <option key={city.id} value={city.id}>
-                  {city.name_ar}
-                </option>
-              ))}
-            </select>
-            {errors.city_id && (
-              <span className="text-xs text-(--error) font-semibold ml-1">
-                {errors.city_id.message}
-              </span>
-            )}
+
+            <Controller
+              name="city_id"
+              control={control}
+              render={({ field, fieldState }) => {
+                const selectedCity = citiesData?.data?.find(
+                  (city) => city.id === field.value
+                );
+
+                return (
+                  <div className="space-y-2">
+                    <div className="relative flex items-center">
+                      <div className="absolute start-3 text-(--primary) z-10 pointer-events-none">
+                        <Building2 size={18} />
+                      </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild disabled={isCitiesLoading}>
+                          <button
+                            type="button"
+                            className={cn(
+                              "h-12 w-full bg-(--input-bg) border transition-all duration-200",
+                              "text-xs md:text-sm  text-start flex items-center justify-between",
+                              "hover:bg-white hover:border-(--secondary)/20",
+                              "ps-10 pe-5 rounded-lg",
+                              "focus-visible:bg-white focus-visible:border-(--secondary)",
+                              "focus-visible:outline-none focus-visible:ring-0",
+                              fieldState.error
+                                ? "border-(--error)"
+                                : "border-transparent"
+                            )}
+                          >
+                            {selectedCity
+                              ? locale === "ar"
+                                ? selectedCity.name_ar
+                                : selectedCity.name_en
+                              : t("Select City")}
+                            <ChevronDown className="h-4 w-4 opacity-60 shrink-0" />
+                          </button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent
+                          className="w-[var(--radix-dropdown-menu-trigger-width)] bg-white p-1"
+                          align={isRTL ? "end" : "start"}
+                        >
+                          {citiesData?.data?.map((city) => (
+                            <DropdownMenuItem
+                              key={city.id}
+                              onClick={() => field.onChange(city.id)}
+                              className={cn(
+                                "text-xs py-1.5 cursor-pointer",
+                                isRTL ? "justify-end" : "justify-start",
+                                field.value === city.id &&
+                                  "bg-(--secondary)/10 font-medium"
+                              )}
+                            >
+                              {locale === "ar" ? city.name_ar : city.name_en}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    {fieldState.error && (
+                      <p className="text-xs text-(--error)">
+                        {fieldState.error.message}
+                      </p>
+                    )}
+                  </div>
+                );
+              }}
+            />
           </div>
-        </div>
-
-        {/* Map Placeholder - Latitude & Longitude */}
-        <div className="space-y-2">
-          <Label className="text-xs font-semibold text-(--label-text)">
-            {t("Select Location on Map")}
-          </Label>
-          <div className="h-48 bg-muted/20 border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-muted-foreground relative">
-            <span className="mb-2 text-sm text-center px-4">
-              {t("mapPendingMsg")}
-            </span>
-
-            <div className="grid grid-cols-2 gap-4 w-full max-w-md px-4 absolute bottom-4">
-              <AuthInput
-                label={t("Latitude")}
-                type="number"
-                placeholder={t("Latitude")}
-                className="bg-white/80"
-                error={errors.latitude?.message}
-                {...register("latitude")}
-              />
-              <AuthInput
-                label={t("Longitude")}
-                type="number"
-                placeholder={t("Longitude")}
-                className="bg-white/80"
-                error={errors.longitude?.message}
-                {...register("longitude")}
-              />
+          {/* Map Placeholder - Latitude & Longitude */}
+          <div className="space-y-2">
+            <Label className="text-xs font-semibold text-(--label-text)">
+              {t("Select Location on Map")}
+            </Label>
+            <LocationMap onLocationSelect={handleMapSelect} />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="hidden">
+                <input type="hidden" {...register("latitude")} />
+                <input type="hidden" {...register("longitude")} />
+              </div>
+              {errors.latitude && (
+                <p className="text-xs text-(--error)">
+                  {errors.latitude.message}
+                </p>
+              )}
+              {errors.longitude && (
+                <p className="text-xs text-(--error)">
+                  {errors.longitude.message}
+                </p>
+              )}
             </div>
           </div>
+          {/* Notes */}
+          <AuthInput
+            label={t("Additional Notes (Optional)")}
+            placeholder={t("Enter any additional notes")}
+            error={errors.note?.message}
+            className=" lg:placeholder:text-sm"
+            icon={IoIosListBox}
+            {...register("note")}
+          />
         </div>
-
-        {/* Notes */}
-        <AuthInput
-          label={t("Additional Notes (Optional)")}
-          placeholder={t("Enter any additional notes")}
-          error={errors.note?.message}
-          {...register("note")}
-        />
 
         <Button
           type="submit"
-          className="w-full md:w-auto md:min-w-[200px] flex mx-auto"
+          className="w-full md:w-auto md:min-w-[200px] flex mx-auto bg-(--primary) font-bold text-sm lg:text-base hover:bg-(--primary)/80 text-white py-6"
           disabled={isLoading}
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

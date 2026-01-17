@@ -1,4 +1,9 @@
 {
+  "Metadata": {
+    "title": "إعاشتك | نظام ذكي لإدارة الإعاشة والتموين",
+    "description": "إعاشتك هي منصة متكاملة لإدارة الإعاشة للشركات، تتبع الوجبات والعمالة والمواقع بكفاءة عالية.",
+    "keywords": "إدارة الإعاشة, تتبع الوجبات, تموين الشركات, إدارة وجبات العمال, السعودية"
+  },
   "Hero": {
     "title": "نظام إدارة الإعاشة الذكي لشركتك",
     "description": "إعاشتك منصة تجمع لك كل ما يتعلق بالوجبات، العمالة، والمواقع في نظام واحد سهل الاستخدام. تابع الطلبات، حدّد الإجازات، راقب الميزانية، وتأكد إن كل وجبة توصل في وقتها.",
@@ -240,7 +245,7 @@
     "Add New Location": "إضافة موقع جديد",
     "noLocations": "لا يوجد مواقع",
     "noLocationsMsg": "لم تقم بإنشاء أي موقع بعد",
-    "Locations": "المواقع",
+    "Locations": "إدارة المواقع",
     "Location Name": "اسم الموقع",
     "Enter location name": "ادخل اسم الموقع",
     "Workers Count": "عدد العمال",
@@ -272,9 +277,10 @@
       "daily": "يومي",
       "weekly": "أسبوعي",
       "monthly": "شهري",
-      "pending": "معلق",
-      "pending_preparation": "قيد التحضير",
-      "pending_delivery": "قيد التوصيل",
+      "pending": "قيد الانتظار",
+      "ended": "منتهي",
+      "preparing": "قيد التحضير",
+      "out_for_delivery": "قيد التوصيل",
       "completed": "مكتمل",
       "cancelled": "ملغى"
     },
@@ -283,7 +289,9 @@
       "deliveryLocation": "مكان التسليم",
       "deliveryTime": "موعد التسليم",
       "viewDetails": "عرض التفاصيل",
-      "cancelOrder": "إلغاء الطلب"
+      "cancelOrder": "إلغاء الطلب",
+      "endIn": "ينتهي في",
+      "today": "اليوم"
     },
     "details": {
       "title": "تفاصيل الطلب #{id}",
@@ -352,5 +360,46 @@
     "cancel": "إلغاء",
     "set": "تحديد الوقت",
     "placeholder": "00:00"
+  },
+  "LocationMap": {
+    "searchPlaceholder": "ابحث عن موقع في السعودية...",
+    "loadingMap": "جاري تحميل الخريطة...",
+    "loadError": "فشل في تحميل الخريطة",
+    "googleMapsError": "فشل في تحميل خرائط جوجل. تحقق من مفتاح API.",
+    "currentLocationTitle": "استخدام الموقع الحالي",
+    "currentLocationError": "فشل في الحصول على الموقع الحالي",
+    "outOfSaudiError": "موقعك الحالي خارج المملكة العربية السعودية",
+    "noLocationFound": "لم يتم العثور على الموقع.",
+    "unknown": "غير معروف",
+    "selectedLocationLabel": "الموقع المحدد:",
+    "cityLabel": "المدينة:",
+    "searchError": "حدث خطأ أثناء البحث",
+    "initializationError": "فشل في تهيئة الخريطة",
+    "browserNotSupported": "المتصفح لا يدعم تحديد الموقع",
+    "currentLocationAddress": "الموقع الحالي"
+  },
+  "Payment": {
+    "title": "إتمام الدفع",
+    "summary": "ملخص الطلب",
+    "mealType": "نوع الوجبة",
+    "mealCount": "عدد الوجبات",
+    "locationName": "اسم الموقع",
+    "deliveryTime": "موعد التسليم",
+    "totalPrice": "السعر الاجمالي",
+    "mealPrice": "سعر الوجبة",
+    "paymentMethod": "طريقة الدفع",
+    "pay": "ادفع {amount} ر.س",
+    "sar": "ر.س",
+    "methods": {
+      "mada": "بطاقة مدى البنكية",
+      "apple_pay": "Apple Pay",
+      "stc_pay": "STC Pay",
+      "credit_card": "بطاقة إئتمانية",
+      "bank_transfer": "تحويل بنكي"
+    }
+  },
+  "Notifications": {
+    "title": "الإشعارات",
+    "empty": "لا توجد إشعارات لديك حاليًا"
   }
 }

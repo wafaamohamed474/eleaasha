@@ -36,6 +36,7 @@ export interface AddOrderRequest {
   recurrence: string;
   delivery_time_start: string;
   delivery_time_end: string;
+  payment_method: string;
   delivery_days?: string[];
   notes?: string;
 }

@@ -1,13 +1,9 @@
 "use client";
 
 import React from "react";
-import {
-  useGetAllOrdersQuery,
-  useDeleteSingleOrderMutation,
-} from "@/store/services/authApi";
+import { useGetAllOrdersQuery } from "@/store/services/authApi";
 import { OrderList } from "@/features/orders/OrderList";
 import { useLocale } from "next-intl";
-import { toast } from "sonner";
 
 export default function OrdersTemplate() {
   const locale = useLocale();

@@ -88,8 +88,6 @@ export function Dashboard() {
     },
   ];
 
-  console.log(homeData.today_summary.last_order);
-
   return (
     <div className="flex flex-col gap-8">
       {/* Top Stats and Summary Section */}

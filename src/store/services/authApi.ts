@@ -51,7 +51,7 @@ const baseQuery = fetchBaseQuery({
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQuery,
-  tagTypes: ["Profile", "Location", "Order"],
+  tagTypes: ["Profile", "Location", "Order", "Notification"],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest & { lang: string }>({
       query: ({ lang, ...credentials }) => ({
@@ -100,7 +100,7 @@ export const authApi = createApi({
       resetPasswordRequest & { lang: string }
     >({
       query: ({ lang, ...body }) => ({
-        url: "/reset-password",
+        url: "/reset-Password",
         method: "POST",
         body,
         params: { lang },
@@ -140,6 +140,29 @@ export const authApi = createApi({
         method: "GET",
         params: { lang },
       }),
+      providesTags: ["Notification"],
+    }),
+    MarkSpecificNotificationAsRead: builder.mutation<
+      any,
+      { lang: string; id: string }
+    >({
+      query: ({ lang, id }) => ({
+        url: `/notifications/${id}/read`,
+        method: "POST",
+        params: { lang },
+      }),
+      invalidatesTags: ["Notification"],
+    }),
+    DeleteSpecificNotification: builder.mutation<
+      any,
+      { lang: string; id: string }
+    >({
+      query: ({ lang, id }) => ({
+        url: `/notifications/${id}/delete`,
+        method: "DELETE",
+        params: { lang },
+      }),
+      invalidatesTags: ["Notification"],
     }),
     GetPagesByType: builder.query<
       PagesResponse,
@@ -194,7 +217,7 @@ export const authApi = createApi({
         params: { lang },
         body,
       }),
-      invalidatesTags: ["Location"],
+      invalidatesTags: ["Location", "Notification"],
     }),
     DeleteSingleLocation: builder.mutation<
       DeleteSingleLocationResponse,
@@ -238,7 +261,7 @@ export const authApi = createApi({
         params: { lang },
         body,
       }),
-      invalidatesTags: ["Order"],
+      invalidatesTags: ["Order", "Notification"],
     }),
     DeleteSingleOrder: builder.mutation<
       DeleteSingleOrderResponse,
@@ -258,6 +281,20 @@ export const authApi = createApi({
         params: { lang },
       }),
     }),
+    logout: builder.mutation<void, string>({
+      query: (lang) => ({
+        url: "/logout",
+        method: "POST",
+        params: { lang },
+      }),
+    }),
+    deleteAccount: builder.mutation<void, string>({
+      query: (lang) => ({
+        url: "/delete-account",
+        method: "DELETE",
+        params: { lang },
+      }),
+    }),
   }),
 });
 
@@ -269,6 +306,8 @@ export const {
   useGetUserInfoQuery,
   useUpdateProfileMutation,
   useGetNotificationsQuery,
+  useMarkSpecificNotificationAsReadMutation,
+  useDeleteSpecificNotificationMutation,
   useGetPagesByTypeQuery,
   useGetHomeDataQuery,
   useGetAllMealsQuery,
@@ -283,4 +322,6 @@ export const {
   useAddLocationMutation,
   useDeleteSingleLocationMutation,
   useGetCitiesQuery,
+  useLogoutMutation,
+  useDeleteAccountMutation,
 } = authApi;

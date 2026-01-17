@@ -98,7 +98,7 @@ export default function TodaySummaryCard({ summary }: TodaySummaryCardProps) {
   );
 }
 
-function DetailItem({
+export function DetailItem({
   icon: Icon,
   label,
   value,

@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import {
   useCreateOrderMutation,
   useGetAllLocationsQuery,
+  useGetSingleMealQuery,
 } from "@/store/services/authApi";
 import {
   OrderInput,
@@ -28,8 +29,9 @@ import {
 } from "@/lib/schemas/orderSchema";
 import { useLocale } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
-import { convertTo24Hour } from "@/utils/time";
-import SectionHeader from "@/components/atoms/SectionHeader";
+import { convertTo24Hour, formatTo12h } from "@/utils/time";
+import SectionTitle from "@/components/atoms/SectionTitle";
+import { PaymentDialog } from "@/components/organisms/PaymentDialog";
 import { FaHashtag } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import {
@@ -38,6 +40,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { IoIosListBox } from "react-icons/io";
+
 export default function CreateOrder() {
   const t = useTranslations("Orders");
   const tCompany = useTranslations("Company");
@@ -46,11 +50,21 @@ export default function CreateOrder() {
   const searchParams = useSearchParams();
   const mealId = searchParams.get("meal_id");
 
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [createOrderFn, { isLoading }] = useCreateOrderMutation();
+
+  const isRTL = locale === "ar";
+
+  // -- States for Payment Dialog --
+  const [showPayment, setShowPayment] = useState(false);
+  const [pendingData, setPendingData] = useState<any>(null);
+
   const { data: locationsData, isLoading: isLocationsLoading } =
     useGetAllLocationsQuery(locale);
 
-  const isRTL = locale === "ar";
+  const { data: mealData, isLoading: isMealLoading } = useGetSingleMealQuery(
+    { lang: locale, id: mealId || "" },
+    { skip: !mealId }
+  );
 
   const tSchema = (key: string) => t(key);
   const schema = createOrderSchema(tSchema);
@@ -95,41 +109,54 @@ export default function CreateOrder() {
   ];
 
   const onSubmit = async (data: OrderOutput) => {
+    // 2. Convert time to 24h & calculate end time
+    const startTime24 = convertTo24Hour(data.delivery_time_start);
+    const [startH, startM] = startTime24.split(":").map(Number);
+
+    let endH = startH + 1;
+    let endM = startM;
+
+    if (endH >= 24) endH -= 24;
+
+    const endTime24 = `${endH.toString().padStart(2, "0")}:${endM
+      .toString()
+      .padStart(2, "0")}`;
+
+    // 3. Store data and open payment dialog
+    setPendingData({
+      ...data,
+      delivery_time_start: startTime24,
+      delivery_time_end: endTime24,
+    });
+    setShowPayment(true);
+  };
+
+  const handlePaymentConfirm = async (paymentMethod: string) => {
+    if (!pendingData) return;
+
     try {
-      // 2. Convert time to 24h & calculate end time
-      const startTime24 = convertTo24Hour(data.delivery_time_start);
-      const [startH, startM] = startTime24.split(":").map(Number);
-
-      let endH = startH + 1;
-      let endM = startM;
-
-      if (endH >= 24) endH -= 24;
-
-      const endTime24 = `${endH.toString().padStart(2, "0")}:${endM
-        .toString()
-        .padStart(2, "0")}`;
-
-      // 3. Prepare final payload
       const payload = {
-        ...data,
-        delivery_time_start: startTime24,
-        delivery_time_end: endTime24,
+        ...pendingData,
+        payment_method: paymentMethod,
         lang: locale,
       };
 
-      console.log("Final Payload:", payload);
-      await createOrder(payload).unwrap();
+      await createOrderFn(payload).unwrap();
       toast.success(t("success"));
       router.push(`/${locale}/dashboard/orders`);
     } catch (error: any) {
       console.log(error);
       toast.error(error?.data?.message || "Fail to create order");
+    } finally {
+      setShowPayment(false);
     }
   };
 
   return (
     <div className="sec-class">
-      <SectionHeader title={t("createOrder")} />
+      <h1 className="text-base font-semibold lg:text-xl lg:font-bold mb-6 text-center">
+        {t("createOrder")}
+      </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-4 lg:space-y-8"
@@ -464,6 +491,7 @@ export default function CreateOrder() {
             label={t("additionalNotesOptional")}
             placeholder={t("enterNotes")}
             className=" lg:placeholder:text-sm"
+            icon={IoIosListBox}
             error={errors.notes?.message}
             {...register("notes")}
           />
@@ -479,6 +507,36 @@ export default function CreateOrder() {
           {t("confirmOrder")}
         </Button>
       </form>
+
+      {/* Payment Dialog */}
+      {mealData?.data && (
+        <PaymentDialog
+          isOpen={showPayment}
+          onClose={() => setShowPayment(false)}
+          onConfirm={handlePaymentConfirm}
+          isLoading={isLoading}
+          orderDetails={{
+            meal: mealData.data,
+            totalQuantity: (function () {
+              const qty = Number(watch("quantity") || 0);
+              const daysCount = pendingData?.delivery_days?.length || 1;
+              const rec = watch("recurrence");
+              if (rec === "daily" || rec === "weekly") {
+                return qty * daysCount;
+              }
+              return qty;
+            })(),
+            mealsPerDay: Number(watch("quantity") || 0),
+            locationName:
+              locationsData?.data?.locations?.find(
+                (l) => l.id === Number(watch("company_location_id"))
+              )?.name || "",
+            deliveryTime: `${formatTo12h(
+              watch("delivery_time_start")
+            )} - ${formatTo12h(pendingData?.delivery_time_end)}`,
+          }}
+        />
+      )}
     </div>
   );
 }

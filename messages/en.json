@@ -1,4 +1,9 @@
 {
+  "Metadata": {
+    "title": "El-Eaasha | Smart Catering Management System",
+    "description": "El-Eaasha is an all-in-one catering management platform for companies, tracking meals, workforce, and locations with high efficiency.",
+    "keywords": "catering management, meal tracking, workforce subsistence, company meal management, Saudi Arabia catering"
+  },
   "Hero": {
     "title": "The Smart Catering Management System for Your Company",
     "description": "El-Eaasha is an all-in-one platform that brings together everything related to meals, workforce, and locations in one easy-to-use system. Track orders, manage leaves, monitor budgets, and ensure every meal arrives on time.",
@@ -249,8 +254,9 @@
       "weekly": "Weekly",
       "monthly": "Monthly",
       "pending": "Pending",
-      "pending_preparation": "Pending Preparation",
-      "pending_delivery": "Pending Delivery",
+      "ended": "Ended",
+      "preparing": "Preparing",
+      "out_for_delivery": "Delivering",
       "completed": "Completed",
       "cancelled": "Cancelled"
     },
@@ -259,7 +265,9 @@
       "deliveryLocation": "Delivery Location",
       "deliveryTime": "Delivery Time",
       "viewDetails": "View Details",
-      "cancelOrder": "Cancel Order"
+      "cancelOrder": "Cancel Order",
+      "endIn": "End In",
+      "today": "Today"
     },
     "details": {
       "title": "Order Details #{id}",
@@ -312,7 +320,7 @@
     "Add New Location": "Add New Location",
     "noLocations": "No Locations",
     "noLocationsMsg": "You haven't created any locations yet",
-    "Locations": "Locations",
+    "Locations": "Manage Locations",
     "Location Name": "Location Name",
     "Enter location name": "Enter location name",
     "Workers Count": "Workers Count",
@@ -353,5 +361,46 @@
     "cancel": "Cancel",
     "set": "Set Time",
     "placeholder": "00:00"
+  },
+  "LocationMap": {
+    "searchPlaceholder": "Search for a location in Saudi Arabia...",
+    "loadingMap": "Loading map...",
+    "loadError": "Failed to load map",
+    "googleMapsError": "Failed to load Google Maps. Check API key.",
+    "currentLocationTitle": "Use current location",
+    "currentLocationError": "Failed to get current location",
+    "outOfSaudiError": "Your current location is outside Saudi Arabia",
+    "noLocationFound": "Location not found.",
+    "unknown": "Unknown",
+    "selectedLocationLabel": "Selected Location:",
+    "cityLabel": "City:",
+    "searchError": "An error occurred during search",
+    "initializationError": "Failed to initialize map",
+    "browserNotSupported": "Browser does not support geolocation",
+    "currentLocationAddress": "Current Location"
+  },
+  "Payment": {
+    "title": "Complete Payment",
+    "summary": "Order Summary",
+    "mealType": "Meal Type",
+    "mealCount": "Meal Count",
+    "locationName": "Location Name",
+    "deliveryTime": "Delivery Time",
+    "totalPrice": "Total Price",
+    "mealPrice": "Meal Price",
+    "paymentMethod": "Payment Method",
+    "pay": "Pay {amount} SAR",
+    "sar": "SAR",
+    "methods": {
+      "mada": "Mada Bank Card",
+      "apple_pay": "Apple Pay",
+      "stc_pay": "STC Pay",
+      "credit_card": "Credit Card",
+      "bank_transfer": "Bank Transfer"
+    }
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "empty": "You have no notifications right now"
   }
 }

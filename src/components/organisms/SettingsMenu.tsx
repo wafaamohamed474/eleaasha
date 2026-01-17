@@ -9,7 +9,11 @@ import BackButton from "@/components/molecules/BackButton";
 import { SettingMenuItem } from "../molecules/SettingMenuItem";
 import { usePathname } from "next/navigation";
 import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
-import { useGetUserInfoQuery } from "@/store/services/authApi";
+import {
+  useDeleteAccountMutation,
+  useGetUserInfoQuery,
+  useLogoutMutation,
+} from "@/store/services/authApi";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -17,6 +21,10 @@ import { Skeleton } from "../ui/skeleton";
 import UserInfoSkeleton from "../molecules/UserInfoSkeleton";
 import ConfirmationDialog from "../molecules/ConfirmationDialog";
 import { useState } from "react";
+import {
+  getAuthTokenClient,
+  removeAuthTokenClient,
+} from "@/lib/auth/authClient";
 
 export default function SettingsMenu() {
   const t = useTranslations("sidebar");
@@ -26,6 +34,7 @@ export default function SettingsMenu() {
   const isRTL = locale === "ar";
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
+
   const menuItems = [
     {
       title: t("profile"),
@@ -61,7 +70,34 @@ export default function SettingsMenu() {
     const newPath = segments.join("/") || "/";
     router.push(newPath);
   };
-
+  const [deleteAccount] = useDeleteAccountMutation();
+  const [logoutMutation] = useLogoutMutation();
+  const handleLogout = async () => {
+    try {
+      await logoutMutation(locale).unwrap();
+    } catch (error) {
+      console.log("Logout error:", error);
+    } finally {
+      removeAuthTokenClient();
+      await fetch("/api/logout", { method: "POST" });
+      setLogoutDialogOpen(false);
+      router.push(`/${locale}/`);
+      router.refresh();
+    }
+  };
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount(locale).unwrap();
+    } catch (error) {
+      console.log("Delete account error:", error);
+    } finally {
+      removeAuthTokenClient();
+      await fetch("/api/logout", { method: "POST" });
+      setDeleteAccountDialogOpen(false);
+      router.push(`/${locale}/`);
+      router.refresh();
+    }
+  };
   const { data: userInfo, isLoading } = useGetUserInfoQuery(locale);
   return (
     <div className="flex flex-col lg:hidden">
@@ -147,11 +183,7 @@ export default function SettingsMenu() {
         description={t("logoutConfirm.description")}
         confirmText={t("logoutConfirm.confirm")}
         cancelText={t("logoutConfirm.cancel")}
-        onConfirm={() => {
-          // TODO: Implement logout logic
-          console.log("Logout confirmed");
-          setLogoutDialogOpen(false);
-        }}
+        onConfirm={handleLogout}
         variant="destructive"
       />
 
@@ -163,11 +195,7 @@ export default function SettingsMenu() {
         description={t("deleteAccountConfirm.description")}
         confirmText={t("deleteAccountConfirm.confirm")}
         cancelText={t("deleteAccountConfirm.cancel")}
-        onConfirm={() => {
-          // TODO: Implement delete account logic
-          console.log("Delete account confirmed");
-          setDeleteAccountDialogOpen(false);
-        }}
+        onConfirm={handleDeleteAccount}
         variant="destructive"
       />
     </div>

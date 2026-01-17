@@ -69,7 +69,6 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
       // Clear the verification purpose and go back to login
       dispatch(updateForm({ verificationPurpose: "default" }));
       dispatch(setStep("LOGIN"));
-      if (onSuccess) onSuccess();
     } else if (isError) {
       console.log(apiError);
       const errorMessage =

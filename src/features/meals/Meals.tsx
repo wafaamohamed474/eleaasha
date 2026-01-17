@@ -14,10 +14,10 @@ export default function Meals() {
       <SectionTitle title={isRTL ? "الوجبات" : "Meals"} />
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          <Skeleton className="h-[200px]" />
-          <Skeleton className="h-[200px]" />
-          <Skeleton className="h-[200px]" />
-          <Skeleton className="h-[200px]" />
+          <Skeleton className="lg:h-[200px] h-[150px]" />
+          <Skeleton className="lg:h-[200px] h-[150px]" />
+          <Skeleton className="lg:h-[200px] h-[150px]" />
+          <Skeleton className="lg:h-[200px] h-[150px]" />
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

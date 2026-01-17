@@ -76,7 +76,7 @@ export function DashboardCarousel({
             <CarouselItem
               key={index}
               className={cn(
-                "pl-4 basis-[65%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4",
+                "pl-4 basis-1/2 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4",
                 itemClassName
               )}
             >

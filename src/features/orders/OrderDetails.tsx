@@ -28,36 +28,40 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
     icon: Icon,
     label,
     value,
-    className = "bg-slate-50",
-    iconColor = "text-(--secondary)",
+    className = "bg-(--secondary-foreground)",
   }: {
     icon: any;
     label: string;
     value: React.ReactNode;
     className?: string;
-    iconColor?: string;
   }) => (
     <div
       className={cn(
-        "p-4 rounded-xl flex flex-col justify-between gap-2 h-full min-h-[100px]",
+        "p-4 rounded-xl flex flex-col justify-between gap-2 h-full",
         className
       )}
     >
-      <div className="flex justify-between items-start">
-        <span className="text-xs text-(--secondary) font-medium">{label}</span>
-        <Icon size={18} className={iconColor} />
+      <div className="flex justify-start items-start gap-2">
+        <Icon size={18} className="text-(--primary)" />
+        <span className="text-xs lg:text-sm text-(--primary) font-medium">
+          {label}
+        </span>
       </div>
-      <div className="text-lg font-bold text-(--main-text) line-clamp-2">
+      <div className="text-sm lg:text-base lg:font-semibold font-medium text-(--details-title) line-clamp-2">
         {value}
       </div>
     </div>
   );
 
+  const statusBg =
+    order.status === "pending" || order.status === "قيد الانتظار"
+      ? "bg-(--primary)/10"
+      : "bg-(--secondary-foreground)";
   return (
     <div className="flex flex-col gap-6">
       <div className="sec-class">
         <div className="flex flex-col items-center gap-2 mb-8">
-          <h1 className="text-2xl font-bold text-(--main-text)">
+          <h1 className="text-lg font-semibold text-black">
             {t("details.title", { id: order.id })}
           </h1>
         </div>
@@ -106,8 +110,7 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
                 return order.status;
               }
             })()}
-            className="bg-orange-50"
-            iconColor="text-orange-500"
+            className={statusBg}
           />
 
           {/* Row 3 */}
@@ -128,20 +131,20 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
             <InfoCard
               icon={MapPin}
               label={t("details.location")}
-              value={order.site?.address || order.company_location?.address}
+              value={order?.company_location?.name ?? ""}
             />
           </div>
         </div>
 
         {/* Total Price */}
-        <div className="w-full bg-(--secondary) text-white p-4 rounded-xl flex flex-col items-center justify-center gap-1 shadow-md mt-6">
-          <div className="flex items-center gap-2 text-white/90">
-            <DollarSign size={20} />
-            <span className="text-lg font-medium">
+        <div className="w-fit bg-(--primary) text-white py-2 px-16 mx-auto rounded-xl flex flex-col items-center justify-center shadow-md mt-6">
+          <div className="flex items-center gap-1 text-white/90">
+            <DollarSign className="lg:size-6 size-4" />
+            <span className="text-xs lg:text-base font-medium">
               {t("details.totalPrice")}
             </span>
           </div>
-          <p className="text-2xl font-bold" dir="ltr">
+          <p className="text-sm lg:text-lg font-bold">
             {order.total} {t("details.sar")}
           </p>
         </div>

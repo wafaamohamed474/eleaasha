@@ -28,9 +28,10 @@ export const OrderList: React.FC<OrderListProps> = ({
   const tabs = [
     { id: "all", label: t("tabs.all") },
     { id: "active", label: t("tabs.active") },
+    { id: "pending", label: t("tabs.pending") },
+    { id: "preparing", label: t("tabs.preparing") },
+    { id: "out_for_delivery", label: t("tabs.out_for_delivery") },
     { id: "completed", label: t("tabs.completed") },
-    { id: "pending_preparation", label: t("tabs.pending_preparation") },
-    { id: "pending_delivery", label: t("tabs.pending_delivery") },
     { id: "cancelled", label: t("tabs.cancelled") },
   ];
 
@@ -107,7 +108,7 @@ export const OrderList: React.FC<OrderListProps> = ({
               title={t("noOrders")}
               desc={t("noOrdersYet")}
               btnLabel={t("createOrder")}
-              href="/orders/create"
+              href="/dashboard/meals"
             />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2  gap-6">

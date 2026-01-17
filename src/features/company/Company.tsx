@@ -37,7 +37,12 @@ export default function Company() {
             <Skeleton className="h-[200px]" />
           </div>
         ) : locationsData?.data.locations.length === 0 ? (
-          <EmptySection title={t("noLocations")} desc={t("noLocationsMsg")} />
+          <EmptySection
+            title={t("noLocations")}
+            desc={t("noLocationsMsg")}
+            btnLabel={t("Add New Location")}
+            href={`/dashboard/company/create`}
+          />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {locationsData?.data.locations.map((location) => (

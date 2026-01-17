@@ -4,6 +4,7 @@ import { LangSwitch } from "../molecules/LangSwitch";
 import NotificationsBtn from "../molecules/NotificationsBtn";
 import { useGetUserInfoQuery } from "@/store/services/authApi";
 import UserInfoSkeleton from "../molecules/UserInfoSkeleton";
+import { NotificationMenu } from "./NotificationMenu";
 
 export default function DashboardNavbar() {
   const t = useTranslations("Dashboard");
@@ -31,7 +32,7 @@ export default function DashboardNavbar() {
         {/* Left: Actions */}
         <div className="flex items-center gap-2 sm:gap-4">
           {/* Notifications */}
-          <NotificationsBtn />
+          <NotificationMenu />
           {/* Language Switch */}
           <div className="hidden lg:block">
             <LangSwitch />

@@ -34,50 +34,6 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const locale = useLocale();
   const isRTL = locale === "ar";
 
-  const getStatusConfig = (status: string) => {
-    switch (status) {
-      case "completed":
-        return {
-          color: "text-green-600",
-          bg: "bg-green-50",
-          borderColor: "border-green-200",
-          icon: CheckCircle2,
-          label: t("tabs.completed"),
-        };
-      case "pending_preparation":
-        return {
-          color: "text-orange-600",
-          bg: "bg-orange-50",
-          borderColor: "border-orange-200",
-          icon: ChefHat,
-          label: t("tabs.pending_preparation"),
-        };
-      case "pending_delivery":
-        return {
-          color: "text-blue-600",
-          bg: "bg-blue-50",
-          borderColor: "border-blue-200",
-          icon: Truck,
-          label: t("tabs.pending_delivery"),
-        };
-      case "cancelled":
-        return {
-          color: "text-red-600",
-          bg: "bg-red-50",
-          borderColor: "border-red-200",
-          icon: XCircle,
-          label: t("tabs.cancelled"),
-        };
-      default:
-        return {
-          color: "text-gray-600",
-          bg: "bg-gray-50",
-          borderColor: "border-gray-200",
-          icon: AlertCircle,
-          label: status,
-        };
-    }
-  };
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleDeleteClick = () => {
@@ -102,9 +58,8 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     }
   };
 
-  const statusConfig = getStatusConfig(order.status);
-  const StatusIcon = statusConfig.icon;
-
+  const EndTime =
+    order.recurrence === "daily" ? t("card.today") : order.delivery_end_date;
   const startTime =
     locale === "ar"
       ? formatTimeToArabic(order?.delivery_time_start ?? "")
@@ -129,13 +84,23 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
             <Badge
               variant="outline"
               className={cn(
-                "px-3 py-1.5 text-sm font-medium border-0 rounded-lg flex items-center gap-2",
-                statusConfig.bg,
-                statusConfig.color
+                "px-3 py-1.5 text-sm font-medium border-0 rounded-lg flex flex-col items-center gap-2"
               )}
             >
-              <StatusIcon size={16} />
-              {statusConfig.label}
+              {order.status === "completed" || order.status === "مكتمل" ? (
+                <span className="text-[10px] text-(--main-text)">
+                  {t("tabs.expired")}
+                </span>
+              ) : (
+                <>
+                  <span className="text-[10px] text-(--main-text)">
+                    {t("card.endIn")}
+                  </span>
+                  <span className="text-xs text-(--primary) block">
+                    {EndTime}
+                  </span>
+                </>
+              )}
             </Badge>
           </div>
 

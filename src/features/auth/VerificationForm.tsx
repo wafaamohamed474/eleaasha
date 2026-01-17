@@ -97,8 +97,6 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
       toast.success(t("title"), {
         description: getTranslatedMessage(verifyState.message),
       });
-      if (onSuccess) onSuccess();
-
       const purpose = formData.verificationPurpose || "default";
       console.log("purpose", purpose);
       if (purpose === "reset_password") {
@@ -108,6 +106,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
         // For default (login/register), set token and go to dashboard
         setAuthTokenClient(verifyState.data.token);
         dispatch(resetAuth());
+        if (onSuccess) onSuccess();
         router.push(`/${locale}/dashboard`);
       }
     } else if (verifyState?.error) {

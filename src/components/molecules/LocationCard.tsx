@@ -14,7 +14,7 @@ interface LocationCardProps {
   isNotHome?: boolean;
 }
 
-export default function LocationCard({ item, isNotHome }: LocationCardProps) {
+export default function LocationCard({ item ,isNotHome}: LocationCardProps) {
   const locale = useLocale();
   const isRTL = locale === "ar";
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
