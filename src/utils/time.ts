@@ -32,12 +32,28 @@ export const convertTo24Hour = (time: string): string => {
     .toString()
     .padStart(2, "0")}`;
 };
-export const formatTo12h = (time24: string): string => {
+export const formatTo12h = (
+  time24: string,
+  locale: string = "ar", // pass "en" or "ar"
+): string => {
   if (!time24) return "";
-  const [hours, minutes] = time24.split(":").map(Number);
-  const period = hours >= 12 ? "PM" : "AM";
-  const hours12 = hours % 12 || 12;
-  return `${hours12.toString().padStart(2, "0")}:${minutes
+
+  const [h, m] = time24.split(":").map(Number);
+  if (Number.isNaN(h) || Number.isNaN(m)) return "";
+
+  const isPM = h >= 12;
+  const hours12 = h % 12 || 12;
+
+  // decide period based on locale
+  const period = locale.startsWith("ar")
+    ? isPM
+      ? "م"
+      : "ص"
+    : isPM
+      ? "PM"
+      : "AM";
+
+  return `${hours12.toString().padStart(2, "0")}:${m
     .toString()
     .padStart(2, "0")} ${period}`;
 };

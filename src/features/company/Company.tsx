@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import EmptySection from "@/components/molecules/EmptySection";
+import { DashboardCarousel } from "@/components/molecules/DashboardCarousel";
 
 export default function Company() {
   const locale = useLocale();

@@ -68,10 +68,8 @@ export function PaymentDialog({
   const isRTL = locale === "ar";
   const mealPrice = parseFloat(orderDetails.meal?.price || "0");
   const totalPrice = mealPrice * orderDetails.totalQuantity;
-  const formattedTime =
-    isRTL && orderDetails?.deliveryTime
-      ? formatTimeToArabic(orderDetails.deliveryTime)
-      : orderDetails?.deliveryTime;
+
+  console.log(orderDetails.deliveryTime);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -81,7 +79,7 @@ export function PaymentDialog({
             "
       >
         <div className="">
-          <DialogHeader className="relative flex items-center justify-center px-5 pb-4 border-b border-(--border)">
+          <DialogHeader className="relative flex items-center justify-center px-5  lg:pb-4 border-b border-(--border)">
             <DialogTitle className="leading-none font-semibold text-base text-(--primary)">
               {t("title")}
             </DialogTitle>
@@ -91,9 +89,9 @@ export function PaymentDialog({
           </DialogHeader>
         </div>
 
-        <div className="px-6 pb-6 space-y-6">
+        <div className="px-6 pb-6 lg:space-y-6 space-y-4">
           {/* Order Summary Card */}
-          <div className="bg-(--primary) text-white p-6 rounded-[2rem] relative overflow-hidden shadow-lg">
+          <div className="bg-(--primary) text-white lg:p-6 p-4 rounded-[2rem] relative overflow-hidden shadow-lg">
             <div className="flex">
               <div className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 text-xs font-bold">
                 <IoIosListBox size={14} />
@@ -130,7 +128,7 @@ export function PaymentDialog({
                 <DetailItem
                   icon={FaClock}
                   label={isRTL ? "موعد التسليم" : "Delivery Time"}
-                  value={`${formattedTime || "---"}`}
+                  value={`${orderDetails.deliveryTime || "---"}`}
                   isRTL={isRTL}
                 />
               </div>
@@ -140,12 +138,6 @@ export function PaymentDialog({
                   icon={DollarSign}
                   label={t("mealPrice")}
                   value={mealPrice.toString() || "---"}
-                  isRTL={isRTL}
-                />
-                <DetailItem
-                  icon={Calendar}
-                  label={isRTL ? "إجمالي الوجبات" : "Total Meals"}
-                  value={orderDetails.totalQuantity.toString() || "---"}
                   isRTL={isRTL}
                 />
 
@@ -162,7 +154,7 @@ export function PaymentDialog({
 
           {/* Payment Methods */}
           <div className="space-y-4">
-            <h3 className="text-base font-bold text-gray-900">
+            <h3 className="lg:text-base text-sm font-bold text-gray-900">
               {t("paymentMethod")}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -174,7 +166,7 @@ export function PaymentDialog({
                     "flex items-center justify-between p-4 rounded-2xl border-2 transition-all group text-start",
                     selectedMethod === method.id
                       ? "border-[#F97316] bg-[#FFF7ED]"
-                      : "border-gray-50 bg-[#F9FAFB] hover:border-gray-200"
+                      : "border-gray-50 bg-[#F9FAFB] hover:border-gray-200",
                   )}
                 >
                   <div className="flex items-center gap-3">
@@ -184,7 +176,7 @@ export function PaymentDialog({
                         "transition-colors",
                         selectedMethod === method.id
                           ? "text-[#F97316]"
-                          : "text-gray-400"
+                          : "text-gray-400",
                       )}
                     />
                     <span
@@ -192,7 +184,7 @@ export function PaymentDialog({
                         "text-[10px] font-bold transition-colors",
                         selectedMethod === method.id
                           ? "text-gray-900"
-                          : "text-gray-600"
+                          : "text-gray-600",
                       )}
                     >
                       {t(method.labelKey)}
@@ -203,7 +195,7 @@ export function PaymentDialog({
                       "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
                       selectedMethod === method.id
                         ? "border-[#F97316] bg-[#F97316]"
-                        : "border-gray-300 bg-white"
+                        : "border-gray-300 bg-white",
                     )}
                   >
                     {selectedMethod === method.id && (
@@ -220,13 +212,13 @@ export function PaymentDialog({
             <Button
               onClick={() => onConfirm(selectedMethod)}
               disabled={isLoading}
-              className="group w-full bg-[#EEF2F6] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#334155] font-black py-7 rounded-2xl flex items-center justify-center gap-3 transition-all"
+              className="group w-full bg-[#EEF2F6] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#334155] font-black lg:py-7 py-5 rounded-2xl flex items-center justify-center gap-3 transition-all"
             >
               <ArrowLeft
                 size={20}
                 className="transition-transform group-hover:-translate-x-1"
               />
-              <span className="text-lg">
+              <span className="lg:text-lg text-sm">
                 {t("pay", { amount: totalPrice })}
               </span>
             </Button>

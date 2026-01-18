@@ -59,7 +59,7 @@ export function DashboardCarousel({
   if (!children || children.length === 0) return null;
 
   return (
-    <div className={cn("w-full relative py-2", className)}>
+    <div className={cn("w-full relative py-2 ", className)}>
       <Carousel
         setApi={setApi}
         className="w-full"
@@ -77,7 +77,7 @@ export function DashboardCarousel({
               key={index}
               className={cn(
                 "pl-4 basis-1/2 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4",
-                itemClassName
+                itemClassName,
               )}
             >
               {child}
@@ -96,7 +96,7 @@ export function DashboardCarousel({
                 "h-2 rounded-full transition-all duration-300",
                 current === index
                   ? "bg-(--primary) w-6 opacity-100"
-                  : "bg-gray-300 w-2 opacity-50 hover:opacity-100"
+                  : "bg-gray-300 w-2 opacity-50 hover:opacity-100",
               )}
               onClick={() => api?.scrollTo(index)}
               aria-label={`Go to slide ${index + 1}`}

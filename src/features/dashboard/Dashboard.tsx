@@ -24,6 +24,11 @@ import { RiBuildingFill } from "react-icons/ri";
 import Link from "next/link";
 import EmptySection from "@/components/molecules/EmptySection";
 import { DashboardCarousel } from "@/components/molecules/DashboardCarousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 export function Dashboard() {
   const locale = useLocale();
@@ -91,10 +96,10 @@ export function Dashboard() {
   return (
     <div className="flex flex-col gap-8">
       {/* Top Stats and Summary Section */}
-      <div className="flex flex-col xl:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Left:  Banners & Summary */}
         {homeData.today_summary.last_order ? (
-          <div className="w-full xl:w-1/2 flex flex-col gap-4">
+          <div className="w-full lg:w-1/2 flex flex-col gap-4">
             <SectionTitle
               title={
                 isRTL
@@ -105,16 +110,16 @@ export function Dashboard() {
             <TodaySummaryCard summary={homeData.today_summary} />
           </div>
         ) : (
-          <div className="w-full xl:w-1/2 flex flex-col gap-4">
+          <div className="w-full lg:w-1/2 flex flex-col gap-4">
             <SectionTitle title={isRTL ? "الإعلانات" : "Banners"} />
             <BannersSlider items={homeData.banners_section.items} />
           </div>
         )}
 
         {/* Right: Stats Grid */}
-        <div className="flex min-w-1/2 flex-col gap-4">
+        <div className="flex min-w-1/2   flex-col gap-4">
           <SectionTitle title={isRTL ? "الاحصائيات" : "Statistics"} />
-          <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-2 gap-4 ">
+          <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 ">
             {stats.map((stat, idx) => (
               <StatsCard key={idx} {...stat} />
             ))}
@@ -161,6 +166,21 @@ export function Dashboard() {
               <LocationCard key={location.id} item={location} />
             ))}
           </DashboardCarousel>
+          // <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          //   {homeData.locations_management.items.map((location) => (
+          //     <LocationCard key={location.id} item={location} />
+          //   ))}
+          // </div>
+
+          // <Carousel>
+          //   <CarouselContent>
+          //     {homeData.locations_management.items.map((location) => (
+          //       <CarouselItem key={location.id} className="basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+          //         <LocationCard item={location} />
+          //       </CarouselItem>
+          //     ))}
+          //   </CarouselContent>
+          // </Carousel>
         ) : (
           <EmptySection
             title={c("noLocations")}

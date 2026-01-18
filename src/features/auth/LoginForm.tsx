@@ -63,7 +63,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
         description: state.message || "Login successful",
       });
       // Redirect or handle successful login
-      if (onSuccess) onSuccess();
+      // if (onSuccess) onSuccess();
       dispatch(resetAuth());
       router.push(`/${locale}/dashboard`);
       // Optional: Redirect to home using router if onSuccess doesn't handle it

@@ -38,7 +38,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
   const [timeLeft, setTimeLeft] = useState(59);
   const [verifyState, verifyFormAction, isVerifyPending] = useActionState(
     verifyOtpAction,
-    null
+    null,
   );
 
   const tSchema = (key: string) => t(key);
@@ -98,7 +98,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
         description: getTranslatedMessage(verifyState.message),
       });
       const purpose = formData.verificationPurpose || "default";
-      console.log("purpose", purpose);
+
       if (purpose === "reset_password") {
         // For password reset, go to reset password form
         dispatch(setStep("RESET_PASSWORD"));
@@ -106,7 +106,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
         // For default (login/register), set token and go to dashboard
         setAuthTokenClient(verifyState.data.token);
         dispatch(resetAuth());
-        if (onSuccess) onSuccess();
+
         router.push(`/${locale}/dashboard`);
       }
     } else if (verifyState?.error) {
@@ -207,7 +207,7 @@ export const VerificationForm: React.FC<VerificationFormProps> = ({
                       "text-slate-300",
                       "data-[active=true]:[background-image:none] data-[active=true]:bg-white data-[active=true]:border-(--primary) data-[active=true]:ring-5 data-[active=true]:ring-(--primary)/10 data-[active=true]:scale-102 data-[active=true]:shadow-sm data-[active=true]:text-(--primary) data-[active=true]:z-10",
                       "data-[status=filled]:[background-image:none] data-[status=filled]:bg-slate-50/50 data-[status=filled]:border-(--secondary)/40 data-[status=filled]:text-(--secondary)",
-                      "hover:scale-105"
+                      "hover:scale-105",
                     )}
                   />
                 ))}

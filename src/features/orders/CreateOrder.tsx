@@ -44,7 +44,7 @@ import { IoIosListBox } from "react-icons/io";
 
 export default function CreateOrder() {
   const t = useTranslations("Orders");
-  const tCompany = useTranslations("Company");
+  const c = useTranslations("Company");
   const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -63,7 +63,7 @@ export default function CreateOrder() {
 
   const { data: mealData, isLoading: isMealLoading } = useGetSingleMealQuery(
     { lang: locale, id: mealId || "" },
-    { skip: !mealId }
+    { skip: !mealId },
   );
 
   const tSchema = (key: string) => t(key);
@@ -128,6 +128,7 @@ export default function CreateOrder() {
       delivery_time_start: startTime24,
       delivery_time_end: endTime24,
     });
+
     setShowPayment(true);
   };
 
@@ -140,7 +141,7 @@ export default function CreateOrder() {
         payment_method: paymentMethod,
         lang: locale,
       };
-
+      // console.log(" final payload", payload);
       await createOrderFn(payload).unwrap();
       toast.success(t("success"));
       router.push(`/${locale}/dashboard/orders`);
@@ -151,6 +152,8 @@ export default function CreateOrder() {
       setShowPayment(false);
     }
   };
+
+  const hasLocations = (locationsData?.data?.locations?.length ?? 0) > 0;
 
   return (
     <div className="sec-class">
@@ -182,6 +185,7 @@ export default function CreateOrder() {
               <input type="hidden" {...register("meal_id")} />
 
               {/* Location Select */}
+
               <div className="space-y-2 w-full">
                 <Label className="text-xs font-semibold text-(--label-text)">
                   {t("selectLocation")}
@@ -193,9 +197,9 @@ export default function CreateOrder() {
                   render={({ field, fieldState }) => {
                     const selectedLocation =
                       locationsData?.data?.locations?.find(
-                        (loc) => loc.id === field.value
+                        (loc) => loc.id === field.value,
                       );
-
+                    const showNoLocations = !hasLocations;
                     return (
                       <div className="space-y-2">
                         <div className="relative flex items-center">
@@ -207,7 +211,7 @@ export default function CreateOrder() {
                           <DropdownMenu>
                             <DropdownMenuTrigger
                               asChild
-                              disabled={isLocationsLoading}
+                              disabled={isLocationsLoading || showNoLocations}
                             >
                               <button
                                 type="button"
@@ -218,14 +222,16 @@ export default function CreateOrder() {
                                   "ps-10 pe-5 rounded-lg",
                                   "focus-visible:bg-white focus-visible:border-(--secondary)",
                                   "focus-visible:outline-none focus-visible:ring-0",
-                                  fieldState.error
+                                  fieldState.error || showNoLocations
                                     ? "border-(--error)"
-                                    : "border-transparent"
+                                    : "border-transparent",
                                 )}
                               >
                                 {selectedLocation
                                   ? selectedLocation.name
-                                  : t("locationPlaceholder")}
+                                  : showNoLocations
+                                    ? c("noLocationsMsg")
+                                    : t("locationPlaceholder")}
                                 <ChevronDown className="h-4 w-4 opacity-60 shrink-0" />
                               </button>
                             </DropdownMenuTrigger>
@@ -241,7 +247,7 @@ export default function CreateOrder() {
                                   className={cn(
                                     "text-xs py-1.5 cursor-pointer",
                                     field.value === loc.id &&
-                                      "bg-(--secondary)/10 font-medium"
+                                      "bg-(--secondary)/10 font-medium",
                                   )}
                                 >
                                   {loc.name}
@@ -251,9 +257,11 @@ export default function CreateOrder() {
                           </DropdownMenu>
                         </div>
 
-                        {fieldState.error && (
+                        {(fieldState.error || showNoLocations) && (
                           <p className="text-xs text-(--error)">
-                            {fieldState.error.message}
+                            {fieldState.error
+                              ? fieldState.error.message
+                              : c("noLocationsMsg")}
                           </p>
                         )}
                       </div>
@@ -277,19 +285,19 @@ export default function CreateOrder() {
                       "flex flex-col items-center justify-center p-3 rounded-xl border-2   transition-all gap-2",
                       recurrence === type
                         ? "border-(--primary) bg-(--primary) text-white"
-                        : "border-gray-100 hover:border-gray-200 text-gray-500"
+                        : "border-gray-100 hover:border-gray-200 text-gray-500",
                     )}
                   >
                     <Calendar
                       className={cn(
                         "w-5 h-5",
-                        recurrence === type ? "text-white" : "text-gray-400"
+                        recurrence === type ? "text-white" : "text-gray-400",
                       )}
                     />
                     <span
                       className={cn(
                         "text-xs font-medium",
-                        recurrence === type ? "text-white" : "text-gray-600"
+                        recurrence === type ? "text-white" : "text-gray-600",
                       )}
                     >
                       {t(`tabs.${type}`)}
@@ -347,7 +355,7 @@ export default function CreateOrder() {
                       control={control}
                       render={({ field, fieldState }) => {
                         const selectedFrom = WEEK_DAYS.find(
-                          (d) => d.value === field.value
+                          (d) => d.value === field.value,
                         );
 
                         return (
@@ -365,7 +373,7 @@ export default function CreateOrder() {
                                     "focus-visible:outline-none focus-visible:ring-0",
                                     fieldState.error
                                       ? "border-(--error)"
-                                      : "border-transparent"
+                                      : "border-transparent",
                                   )}
                                 >
                                   <span className="truncate">
@@ -387,7 +395,7 @@ export default function CreateOrder() {
                                       "text-xs py-1.5",
                                       isRTL ? "justify-end" : "justify-start",
                                       field.value === day.value &&
-                                        "bg-(--secondary)/10 font-medium"
+                                        "bg-(--secondary)/10 font-medium",
                                     )}
                                   >
                                     {day.label}
@@ -417,7 +425,7 @@ export default function CreateOrder() {
                       name="day_to"
                       render={({ field, fieldState }) => {
                         const selectedTo = WEEK_DAYS.find(
-                          (d) => d.value === field.value
+                          (d) => d.value === field.value,
                         );
 
                         return (
@@ -435,7 +443,7 @@ export default function CreateOrder() {
                                     "focus-visible:outline-none focus-visible:ring-0",
                                     fieldState.error
                                       ? "border-(--error)"
-                                      : "border-transparent"
+                                      : "border-transparent",
                                   )}
                                 >
                                   <span className="truncate">
@@ -457,7 +465,7 @@ export default function CreateOrder() {
                                       "text-xs py-1.5",
                                       isRTL ? "justify-end" : "justify-start",
                                       field.value === day.value &&
-                                        "bg-(--secondary)/10 font-medium"
+                                        "bg-(--secondary)/10 font-medium",
                                     )}
                                   >
                                     {day.label}
@@ -500,7 +508,7 @@ export default function CreateOrder() {
         <Button
           type="submit"
           className="w-full md:w-auto md:min-w-[200px] flex mx-auto bg-(--primary) font-bold text-sm lg:text-base hover:bg-(--primary)/80 text-white py-6"
-          disabled={isLoading}
+          disabled={isLoading || !hasLocations}
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           <ShoppingCart className="w-5 h-5" />
@@ -521,19 +529,22 @@ export default function CreateOrder() {
               const qty = Number(watch("quantity") || 0);
               const daysCount = pendingData?.delivery_days?.length || 1;
               const rec = watch("recurrence");
-              if (rec === "daily" || rec === "weekly") {
+              if (rec === "weekly") {
                 return qty * daysCount;
+              } else if (rec === "monthly") {
+                return qty * daysCount * 4;
               }
               return qty;
             })(),
             mealsPerDay: Number(watch("quantity") || 0),
             locationName:
               locationsData?.data?.locations?.find(
-                (l) => l.id === Number(watch("company_location_id"))
+                (l) => l.id === Number(watch("company_location_id")),
               )?.name || "",
             deliveryTime: `${formatTo12h(
-              watch("delivery_time_start")
-            )} - ${formatTo12h(pendingData?.delivery_time_end)}`,
+              pendingData?.delivery_time_start,
+              locale,
+            )} - ${formatTo12h(pendingData?.delivery_time_end, locale)}`,
           }}
         />
       )}
