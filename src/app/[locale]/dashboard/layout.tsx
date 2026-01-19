@@ -16,7 +16,7 @@ export default async function DashboardLayoutWrapper({
         <DashboardSidebar />
         <div className="flex flex-col flex-1 w-full" >
           <DashboardNavbar />
-          <main className="flex-1 w-full container-custom  min-h-screen lg:bg-(--secondary-foreground) pt-5 pb-20 md:py-5">
+          <main className="flex-1 w-full container-custom  min-h-screen lg:bg-(--secondary-foreground) pt-5 pb-20 lg:py-5">
             {children}
           </main>
         </div>

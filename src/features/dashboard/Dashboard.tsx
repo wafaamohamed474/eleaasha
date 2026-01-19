@@ -166,23 +166,8 @@ export function Dashboard() {
               <LocationCard key={location.id} item={location} />
             ))}
           </DashboardCarousel>
-          // <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          //   {homeData.locations_management.items.map((location) => (
-          //     <LocationCard key={location.id} item={location} />
-          //   ))}
-          // </div>
-
-          // <Carousel>
-          //   <CarouselContent>
-          //     {homeData.locations_management.items.map((location) => (
-          //       <CarouselItem key={location.id} className="basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-          //         <LocationCard item={location} />
-          //       </CarouselItem>
-          //     ))}
-          //   </CarouselContent>
-          // </Carousel>
         ) : (
-          <EmptySection
+            <EmptySection
             title={c("noLocations")}
             desc={c("noLocationsMsg")}
             btnLabel={c("Add New Location")}

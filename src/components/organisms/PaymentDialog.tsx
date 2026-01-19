@@ -156,13 +156,13 @@ export function PaymentDialog({
             <h3 className="lg:text-base text-sm font-bold text-gray-900">
               {t("paymentMethod")}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 lg:gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-3">
               {PAYMENT_METHODS.map((method) => (
                 <button
                   key={method.id}
                   onClick={() => setSelectedMethod(method.id)}
                   className={cn(
-                    "flex items-center justify-between lg:p-4 py-2 px-4 rounded-2xl border-2 transition-all group text-start",
+                    "flex items-center justify-between  p-4 rounded-2xl border-2 transition-all group text-start",
                     selectedMethod === method.id
                       ? "border-[#F97316] bg-[#FFF7ED]"
                       : "border-gray-50 bg-[#F9FAFB] hover:border-gray-200",
@@ -211,7 +211,7 @@ export function PaymentDialog({
             <Button
               onClick={() => onConfirm(selectedMethod)}
               disabled={isLoading}
-              className="group w-full bg-[#EEF2F6] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#334155] font-black lg:py-7 py-5 rounded-2xl flex items-center justify-center gap-3 transition-all"
+              className="group w-full bg-[#EEF2F6] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#334155] font-black py-6 lg:py-7 rounded-2xl flex items-center justify-center gap-3 transition-all"
             >
               <ArrowLeft
                 size={20}

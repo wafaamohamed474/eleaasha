@@ -10,14 +10,26 @@ export const createLocationSchema = (t: any) =>
       .number({ message: t("required") })
       .min(1, { message: t("required") }),
 
-    latitude: z.coerce
-      .number()
-      .min(-90)
-      .max(90, { message: t("required") }),
-    longitude: z.coerce
-      .number()
-      .min(-180)
-      .max(180, { message: t("required") }),
+    latitude: z.preprocess(
+      (val) =>
+        val === "" || val === undefined || val === null
+          ? undefined
+          : Number(val),
+      z
+        .number({ message: t("required") })
+        .min(-90)
+        .max(90),
+    ),
+    longitude: z.preprocess(
+      (val) =>
+        val === "" || val === undefined || val === null
+          ? undefined
+          : Number(val),
+      z
+        .number({ message: t("required") })
+        .min(-180)
+        .max(180),
+    ),
     note: z.string().optional(),
   });
 

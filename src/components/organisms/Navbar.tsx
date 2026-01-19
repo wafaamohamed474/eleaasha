@@ -40,7 +40,7 @@ const Navbar = () => {
           window.history.replaceState(
             null,
             "",
-            window.location.pathname + "#about"
+            window.location.pathname + "#about",
           );
         }
       } else if (
@@ -89,7 +89,7 @@ const Navbar = () => {
 
   return (
     <nav className="absolute top-0 left-0 w-full z-50 bg-transparent transition-all duration-300 ">
-      <div className="container-custom  ">
+      <div className="container-custom  w-full">
         <div className="py-1 md:py-2 flex items-center justify-between border-b border-(--border) w-full">
           {/* Right Side: Logo */}
           <div className="relative z-50">
@@ -114,7 +114,7 @@ const Navbar = () => {
                   "text-lg font-medium transition-colors p-0",
                   isActive(link)
                     ? "text-(--primary)"
-                    : "text-white hover:text-(--primary)"
+                    : "text-white hover:text-(--primary)",
                 )}
                 onClick={() => {
                   if (!link.isExternal) setActiveSection(link.id);
@@ -164,7 +164,7 @@ const Navbar = () => {
                 "text-lg font-medium transition-colors",
                 isActive(link)
                   ? "text-(--primary)"
-                  : "text-(--secondary) hover:text-(--primary)"
+                  : "text-(--secondary) hover:text-(--primary)",
               )}
             >
               {link.name}
@@ -172,13 +172,24 @@ const Navbar = () => {
           ))}
 
           <div className="flex flex-col items-center space-y-4 w-full px-8">
-            <AuthDialog
-              trigger={
-                <Button variant="primary" onClick={toggleMenu}>
-                  {t("login")}
-                </Button>
-              }
-            />
+            <div className="flex items-center space-x-4">
+              <AuthDialog
+                trigger={
+                  <Button variant="primary" onClick={toggleMenu}>
+                    {t("login")}
+                  </Button>
+                }
+              />
+              <AuthDialog
+                trigger={
+                  <Button variant="primary" onClick={toggleMenu}>
+                    {t("register")}
+                  </Button>
+                }
+                initialStep="REGISTER"
+              />
+            </div>
+
             <div className="">
               <LangSwitch />
             </div>

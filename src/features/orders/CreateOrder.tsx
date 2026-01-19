@@ -166,19 +166,19 @@ export default function CreateOrder() {
       >
         {/* Order Details Section */}
         <section className="space-y-4 w-full">
-          <h2 className="text-sm lg:text-lg font-semibold text-(--primary)">
+          <h2 className="text-sm md:text-lg font-semibold text-(--primary)">
             {t("orderDetails")}
           </h2>
 
-          <div className="flex flex-col lg:flex-row justify-start items-start lg:gap-10 w-full ">
-            <div className="space-y-2 w-full lg:w-1/2!">
+          <div className="flex flex-col md:flex-row justify-start items-start md:gap-10 w-full ">
+            <div className="space-y-2 w-full md:w-1/2!">
               {/* Meal Count */}
               <AuthInput
                 label={t("mealCount")}
                 type="number"
                 placeholder={t("enterCount")}
                 icon={FaHashtag}
-                className=" lg:placeholder:text-sm"
+                className=" md:placeholder:text-sm"
                 error={errors.quantity?.message}
                 {...register("quantity")}
               />
@@ -271,7 +271,7 @@ export default function CreateOrder() {
               </div>
             </div>
             {/* Recurrence Select */}
-            <div className="space-y-2 w-full lg:w-fit mt-2 lg:mt-0">
+            <div className="space-y-2 w-full md:w-fit mt-2 lg:mt-0">
               <Label className="text-xs font-semibold text-(--label-text)">
                 {t("recurrence")}
               </Label>
@@ -319,11 +319,11 @@ export default function CreateOrder() {
 
         {/* Delivery Info Section */}
         <section className="space-y-4">
-          <h2 className="text-sm lg:text-lg font-semibold text-(--primary)">
+          <h2 className="text-sm md:text-lg font-semibold text-(--primary)">
             {t("deliveryInfo")}
           </h2>
-          <div className="flex flex-col lg:flex-row justify-start items-end lg:gap-10 gap-3 w-full">
-            <div className="w-full lg:w-1/2!">
+          <div className="flex flex-col md:flex-row justify-start items-end md:gap-10 gap-3 w-full">
+            <div className="w-full md:w-1/2!">
               {/* Delivery Time */}
               <Controller
                 name="delivery_time_start"
@@ -340,7 +340,7 @@ export default function CreateOrder() {
             </div>
             {/* Recurrence Days (Conditional) */}
             {recurrence !== "daily" && (
-              <div className="w-full lg:flex-1">
+              <div className="w-full md:flex-1">
                 <Label className="text-xs font-semibold text-(--label-text)">
                   {t("workApply")}
                 </Label>
@@ -491,7 +491,7 @@ export default function CreateOrder() {
         </section>
 
         {/* Notes Section */}
-        <section className="space-y-4 lg:w-1/2">
+        <section className="space-y-4 md:w-1/2">
           <h2 className="text-sm lg:text-lg font-semibold text-(--primary)">
             {t("additionalNotes")}
           </h2>

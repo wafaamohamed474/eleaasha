@@ -87,7 +87,7 @@ img {
 }
 
 .container-custom {
-  @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  @apply container  mx-auto px-4 sm:px-6 lg:px-8;
 }
 .sec-p {
   @apply py-10;

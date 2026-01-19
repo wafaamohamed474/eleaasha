@@ -31,7 +31,7 @@ const Footer = () => {
   const footerData = footerResponse?.data;
 
   const [policyType, setPolicyType] = useState<"terms" | "privacy" | null>(
-    null
+    null,
   );
 
   const getSocialIcon = (platform: string) => {
@@ -55,7 +55,7 @@ const Footer = () => {
 
   const handleAuthLink = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     e.preventDefault();
 
@@ -69,7 +69,7 @@ const Footer = () => {
   // Filter out app store links if they appear in social_links array
   const socialLinks = footerData?.social_links.filter(
     (link) =>
-      !["google-play", "app-store"].includes(link.platform.toLowerCase())
+      !["google-play", "app-store"].includes(link.platform.toLowerCase()),
   );
 
   return (
@@ -161,7 +161,7 @@ const Footer = () => {
                   <a
                     href={`https://wa.me/${footerData.support.whatsapp.replace(
                       /\+/g,
-                      ""
+                      "",
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -208,7 +208,7 @@ const Footer = () => {
             <p className="text-[10px] md:text-xs lg:text-sm text-white">
               {t("downloadDesc")}
             </p>
-            <div className="flex flex-row gap-2 md:w-auto">
+            <div className="flex flex-row gap-2 justify-center  w-full  ">
               {footerData?.app_links.app_store && (
                 <a
                   href={footerData.app_links.app_store}
@@ -218,7 +218,7 @@ const Footer = () => {
                   <Image
                     src={applestore}
                     alt="App Store"
-                    className="h-4 md:h-10 w-15 md:w-30"
+                    className="h-4 md:h-10 w-15! md:w-30!"
                     objectFit="contain"
                   />
                 </a>
@@ -232,7 +232,7 @@ const Footer = () => {
                   <Image
                     src={googleplay}
                     alt="Google Play"
-                    className="h-4 md:h-10 w-15 md:w-30"
+                    className="h-4 md:h-10 w-15! md:w-30!"
                     objectFit="contain"
                   />
                 </a>

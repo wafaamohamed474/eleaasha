@@ -32,7 +32,7 @@ export const MealDetails: React.FC<MealDetailsProps> = ({ meal }) => {
       <span
         className={cn(
           "flex flex-col items-center justify-center rounded-full w-8 h-8 text-xs text-semibold",
-          colorClass
+          colorClass,
         )}
       >
         {value || 0}
@@ -49,9 +49,9 @@ export const MealDetails: React.FC<MealDetailsProps> = ({ meal }) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="sec-class">
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           {/* Left Image (or Left in RTL) */}
-          <div className="lg:w-[45%] shrink-0">
+          <div className="md:w-[45%] shrink-0">
             <div className="relative aspect-square w-full rounded-xl overflow-hidden shadow-xl shadow-slate-200">
               <Image
                 src={meal.image || placeholderImg}
@@ -67,7 +67,7 @@ export const MealDetails: React.FC<MealDetailsProps> = ({ meal }) => {
             {/* Header */}
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <h1 className="text-sm lg:text-base  font-bold text-(--details-title)">
+                <h1 className="text-sm md:text-base  font-bold text-(--details-title)">
                   {meal.name}
                 </h1>
                 <Badge
@@ -120,7 +120,7 @@ export const MealDetails: React.FC<MealDetailsProps> = ({ meal }) => {
 
             {/* Description */}
             <div className="space-y-3 bg-(--secondary-foreground) py-3 px-2 rounded-2xl mt-2">
-              <h3 className="font-semibold text-sm lg:text-base text-(--details-title)">
+              <h3 className="font-semibold text-sm md:text-base text-(--details-title)">
                 {t("description")}
               </h3>
               <p className="text-(--secondary-text) leading-relaxed text-xs md:text-sm">
@@ -131,7 +131,7 @@ export const MealDetails: React.FC<MealDetailsProps> = ({ meal }) => {
             {/* Ingredients */}
             {meal.ingredients && meal.ingredients.length > 0 && (
               <div className="space-y-3 mt-2">
-                <h3 className="font-semibold text-sm lg:text-base text-(--details-title)">
+                <h3 className="font-semibold text-sm md:text-base text-(--details-title)">
                   {t("ingredients")}
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -150,10 +150,10 @@ export const MealDetails: React.FC<MealDetailsProps> = ({ meal }) => {
 
             {/* Nutritional Values */}
             <div className="space-y-3 mt-2">
-              <h3 className="font-semibold text-sm lg:text-base text-(--details-title)">
+              <h3 className="font-semibold text-sm md:text-base text-(--details-title)">
                 {t("nutritionalValues")}
               </h3>
-              <div className="flex gap-3 overflow-x-auto scrollbar-hide bg-(--secondary-foreground) py-3 px-4 rounded-2xl flex justify-center gap-5 w-full lg:w-fit">
+              <div className="flex gap-3 overflow-x-auto scrollbar-hide bg-(--secondary-foreground) py-3 px-4 rounded-2xl flex justify-center gap-5 w-full md:w-fit">
                 <NutritionalBadge
                   value={meal.calories}
                   label={t("calories")}
@@ -179,10 +179,10 @@ export const MealDetails: React.FC<MealDetailsProps> = ({ meal }) => {
 
             {/* Action Button */}
             <div className="pt-4 w-full flex justify-end">
-              <Button className="btn-gradient border border-(--border) px-8! lg:py-5! rounded-xl text-xs md:text-base font-semibold">
+              <Button className="btn-gradient border border-(--border) px-8! md:py-5! rounded-xl text-xs md:text-base font-semibold">
                 <Link
-                  href={`/${locale}/dashboard/orders/create?meal_id=${meal.id}` }
-                  className="flex items-center gap-2" 
+                  href={`/${locale}/dashboard/orders/create?meal_id=${meal.id}`}
+                  className="flex items-center gap-2"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   {t("orderNow")}

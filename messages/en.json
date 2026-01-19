@@ -4,6 +4,17 @@
     "description": "El-Eaasha is an all-in-one catering management platform for companies, tracking meals, workforce, and locations with high efficiency.",
     "keywords": "catering management, meal tracking, workforce subsistence, company meal management, Saudi Arabia catering"
   },
+  "seo": {
+    "title": "El-Eaasha | Smart Catering Management System",
+    "description": "El-Eaasha is an all-in-one catering management platform for companies, tracking meals, workforce, and locations with high efficiency.",
+    "keywords": "catering management, meal tracking, workforce subsistence, company meal management, Saudi Arabia catering",
+    "ogTitle": "El-Eaasha | Smart Catering Management System",
+    "ogDescription": "Manage your company's catering efficiently with El-Eaasha.",
+    "ogImage": "/logo.png",
+    "twitterTitle": "El-Eaasha | Smart Catering Management System",
+    "twitterDescription": "Manage your company's catering efficiently with El-Eaasha.",
+    "twitterImage": "/logo.png"
+  },
   "Hero": {
     "title": "The Smart Catering Management System for Your Company",
     "description": "El-Eaasha is an all-in-one platform that brings together everything related to meals, workforce, and locations in one easy-to-use system. Track orders, manage leaves, monitor budgets, and ensure every meal arrives on time.",
@@ -17,7 +28,8 @@
     "home": "Home",
     "about": "About Us",
     "contact": "Contact Us",
-    "login": "Login"
+    "login": "Login",
+    "register": "Sign Up"
   },
   "Footer": {
     "about": "Follow us on social media",
@@ -338,7 +350,8 @@
     "Save": "Save",
     "Location added successfully": "Location added successfully",
     "Something went wrong": "Something went wrong",
-    "required": "This field is required"
+    "required": "This field is required",
+    "selectLocationError": "Please select your location or detect it"
   },
   "MealDetails": {
     "sar": "SAR",

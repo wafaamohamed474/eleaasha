@@ -231,14 +231,9 @@ export default function CreateLocation() {
                 <input type="hidden" {...register("latitude")} />
                 <input type="hidden" {...register("longitude")} />
               </div>
-              {errors.latitude && (
-                <p className="text-xs text-(--error)">
-                  {errors.latitude.message}
-                </p>
-              )}
-              {errors.longitude && (
-                <p className="text-xs text-(--error)">
-                  {errors.longitude.message}
+              {(errors.latitude || errors.longitude) && (
+                <p className="text-xs text-(--error) col-span-2">
+                  {t("selectLocationError")}
                 </p>
               )}
             </div>

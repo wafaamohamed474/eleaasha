@@ -54,7 +54,7 @@ const LocationMap = ({ onLocationSelect }: LocationMapProps) => {
       const cityComponent = result.address_components.find(
         (comp: any) =>
           comp.types.includes("locality") ||
-          comp.types.includes("administrative_area_level_1")
+          comp.types.includes("administrative_area_level_1"),
       );
       if (cityComponent) return cityComponent.long_name;
     }
@@ -77,7 +77,7 @@ const LocationMap = ({ onLocationSelect }: LocationMapProps) => {
       setSelectedLocation(finalLocation);
       onLocationSelect(finalLocation);
     },
-    [onLocationSelect, t]
+    [onLocationSelect, t],
   );
 
   // تحميل Google Maps
@@ -145,7 +145,7 @@ const LocationMap = ({ onLocationSelect }: LocationMapProps) => {
 
               updateMarker(lat, lng);
               handleLocationSelect({ lat, lng, address, city });
-            }
+            },
           );
         });
 
@@ -205,7 +205,7 @@ const LocationMap = ({ onLocationSelect }: LocationMapProps) => {
           } else {
             toast.error(t("noLocationFound"));
           }
-        }
+        },
       );
     } catch (error) {
       console.log(error);
@@ -240,16 +240,16 @@ const LocationMap = ({ onLocationSelect }: LocationMapProps) => {
 
                 updateMarker(lat, lng);
                 handleLocationSelect({ lat, lng, address, city });
-              }
+              },
             );
           } else {
             toast.error(t("outOfSaudiError"));
           }
         },
         (error) => {
-          console.error("Error getting location:", error);
+          console.warn("Error getting location:", error);
           toast.error(t("currentLocationError"));
-        }
+        },
       );
     } else {
       toast.error(t("browserNotSupported"));
