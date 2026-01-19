@@ -74,7 +74,7 @@ export function PaymentDialog({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
-        className="w-full max-w-md  h-full sm:h-auto  md:max-w-xl   bg-(--background)  z-10000  flex flex-col px-0 
+        className="w-full max-w-md  h-full  md:h-auto  md:max-w-xl   bg-(--background)  z-10000  flex flex-col   justify-start px-0 
             border-0  
             "
       >
@@ -89,7 +89,7 @@ export function PaymentDialog({
           </DialogHeader>
         </div>
 
-        <div className="px-6 pb-6 lg:space-y-6 space-y-4">
+        <div className="px-6   lg:space-y-6 space-y-2">
           {/* Order Summary Card */}
           <div className="bg-(--primary) text-white lg:p-6 p-4 rounded-[2rem] relative overflow-hidden shadow-lg">
             <div className="flex">
@@ -99,8 +99,8 @@ export function PaymentDialog({
               </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row lg:gap-20 justify-start items-start">
-              <div className="">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-2">
+              
                 <DetailItem
                   icon={PiForkKnifeFill}
                   label={isRTL ? "نوع الوجبة" : "Meal Type"}
@@ -131,9 +131,9 @@ export function PaymentDialog({
                   value={`${orderDetails.deliveryTime || "---"}`}
                   isRTL={isRTL}
                 />
-              </div>
+             
 
-              <div className=" ">
+              
                 <DetailItem
                   icon={DollarSign}
                   label={t("mealPrice")}
@@ -142,28 +142,27 @@ export function PaymentDialog({
                 />
 
                 <div className="flex justify-start items-center gap-1 underline">
-                  <p className="text-base">{t("totalPrice")}</p>
+                  <p className="lg:text-base text-xs">{t("totalPrice")}</p>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-lg font-black">{totalPrice}</span>
-                    <span className="text-base">{t("sar")}</span>
+                    <span className="lg:text-lg text-base font-black">{totalPrice}</span>
+                    <span className="lg:text-base text-xs">{t("sar")}</span>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
 
           {/* Payment Methods */}
-          <div className="space-y-4">
+          <div className="lg:space-y-4 space-y-2">
             <h3 className="lg:text-base text-sm font-bold text-gray-900">
               {t("paymentMethod")}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 lg:gap-3">
               {PAYMENT_METHODS.map((method) => (
                 <button
                   key={method.id}
                   onClick={() => setSelectedMethod(method.id)}
                   className={cn(
-                    "flex items-center justify-between p-4 rounded-2xl border-2 transition-all group text-start",
+                    "flex items-center justify-between lg:p-4 py-2 px-4 rounded-2xl border-2 transition-all group text-start",
                     selectedMethod === method.id
                       ? "border-[#F97316] bg-[#FFF7ED]"
                       : "border-gray-50 bg-[#F9FAFB] hover:border-gray-200",
@@ -208,7 +207,7 @@ export function PaymentDialog({
           </div>
 
           {/* Actions */}
-          <div className="pt-2">
+          <div className="lg:pt-2 pt-0">
             <Button
               onClick={() => onConfirm(selectedMethod)}
               disabled={isLoading}

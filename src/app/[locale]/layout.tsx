@@ -67,6 +67,7 @@ type RootLayoutProps = {
 };
 
 import { StoreProvider } from "@/store/StoreProvider";
+import ScrollToTop from "@/components/molecules/ScrollToTop";
 
 export default async function RootLayout({
   children,
@@ -92,6 +93,7 @@ export default async function RootLayout({
       <body className={`${fontVariable} ${fontClass} antialiased`}>
         <StoreProvider>
           <NextIntlClientProvider messages={messages} locale={locale}>
+            <ScrollToTop/>
             {children}
             <Toaster position="top-center" expand={false} richColors />
             <AuthDialog />

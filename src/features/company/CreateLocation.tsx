@@ -90,7 +90,7 @@ export default function CreateLocation() {
   }) => {
     setValue("latitude", loc.lat, { shouldValidate: true });
     setValue("longitude", loc.lng, { shouldValidate: true });
-
+    console.log("location", loc);
     // Map city name to ID
     if (citiesData?.data) {
       const city = citiesData.data.find(
@@ -98,7 +98,7 @@ export default function CreateLocation() {
           c.name_ar.includes(loc.city) ||
           c.name_en.toLowerCase().includes(loc.city.toLowerCase()) ||
           loc.city.includes(c.name_ar) ||
-          loc.city.toLowerCase().includes(c.name_en.toLowerCase())
+          loc.city.toLowerCase().includes(c.name_en.toLowerCase()),
       );
       if (city) {
         setValue("city_id", city.id, { shouldValidate: true });
@@ -155,7 +155,7 @@ export default function CreateLocation() {
               control={control}
               render={({ field, fieldState }) => {
                 const selectedCity = citiesData?.data?.find(
-                  (city) => city.id === field.value
+                  (city) => city.id === field.value,
                 );
 
                 return (
@@ -177,7 +177,7 @@ export default function CreateLocation() {
                               "focus-visible:outline-none focus-visible:ring-0",
                               fieldState.error
                                 ? "border-(--error)"
-                                : "border-transparent"
+                                : "border-transparent",
                             )}
                           >
                             {selectedCity
@@ -201,7 +201,7 @@ export default function CreateLocation() {
                                 "text-xs py-1.5 cursor-pointer",
                                 isRTL ? "justify-end" : "justify-start",
                                 field.value === city.id &&
-                                  "bg-(--secondary)/10 font-medium"
+                                  "bg-(--secondary)/10 font-medium",
                               )}
                             >
                               {locale === "ar" ? city.name_ar : city.name_en}

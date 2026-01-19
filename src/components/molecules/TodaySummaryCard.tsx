@@ -110,13 +110,13 @@ export function DetailItem({
   isRTL: boolean;
 }) {
   return (
-    <div className={cn("flex items-center gap-1 w-full")}>
+    <div className={cn("flex items-center  gap-1 w-full")}>
       <div className="p-1">
         <Icon size={16} className="text-white" />
       </div>
       <div className={cn("flex items-center justify-start w-full")}>
-        <span className="text-[10px] text-white font-medium ">{label} : </span>
-        <span className="text-[10px] font-medium truncate lg:max-w-[150px] ">
+        <span className="text-[10px] text-white font-medium  ">{label} : </span>
+        <span className="text-[10px] font-medium line-clamp-1    flex-1 lg:max-w-[150px] ">
           {value}
         </span>
       </div>
