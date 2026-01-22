@@ -48,7 +48,7 @@ export default function EmptySection({
       {btnLabel && href && (
         <Button
           asChild
-          className="mt-6 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-xl shadow-sm hover:shadow-md transition-all font-semibold text-xs! lg:text-sm!"
+          className="mt-6 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-xl shadow-sm hover:shadow-md transition-all lg:font-semibold text-xs! lg:text-sm!"
         >
           <Link href={`/${locale}${href}`} className="">
             {btnLabel}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -5,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Search, Locate, Loader2 } from "lucide-react";
+import { loadGoogleMaps } from "@/lib/googleMaps";
 
 interface LocationMapProps {
   onLocationSelect: (location: {
@@ -82,36 +85,12 @@ const LocationMap = ({ onLocationSelect }: LocationMapProps) => {
 
   // تحميل Google Maps
   useEffect(() => {
-    const loadGoogleMaps = async () => {
+    const initializeMap = async () => {
       try {
-        if (window.google && window.google.maps) {
-          initializeMap();
-          return;
-        }
+        await loadGoogleMaps();
 
-        const script = document.createElement("script");
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&language=ar&region=SA&callback=initMap`;
-        script.async = true;
-        script.defer = true;
+        if (!mapRef.current || !window.google) return;
 
-        window.initMap = initializeMap;
-
-        script.onerror = () => {
-          setMapError(t("googleMapsError"));
-          setIsMapLoading(false);
-        };
-
-        document.head.appendChild(script);
-      } catch (error) {
-        console.log(error);
-        setMapError(t("loadError"));
-        setIsMapLoading(false);
-      }
-    };
-
-    const initializeMap = () => {
-      if (!mapRef.current || !window.google) return;
-      try {
         const map = new window.google.maps.Map(mapRef.current, {
           center: saudiCenter,
           zoom: 6,
@@ -151,19 +130,13 @@ const LocationMap = ({ onLocationSelect }: LocationMapProps) => {
 
         setIsMapLoading(false);
       } catch (error) {
-        console.log(error);
-        setMapError(t("initializationError"));
+        console.error("Map initialization error:", error);
+        setMapError(t("loadError"));
         setIsMapLoading(false);
       }
     };
 
-    loadGoogleMaps();
-
-    return () => {
-      if (Object.prototype.hasOwnProperty.call(window, "initMap")) {
-        delete (window as any).initMap;
-      }
-    };
+    initializeMap();
   }, [handleLocationSelect, t]);
 
   const updateMarker = (lat: number, lng: number) => {

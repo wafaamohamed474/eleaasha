@@ -211,7 +211,7 @@ export default function CreateLocation() {
                       </DropdownMenu>
                     </div>
                     {fieldState.error && (
-                      <p className="text-xs text-(--error)">
+                      <p className="text-xs text-(--error) font-semibold ml-1">
                         {fieldState.error.message}
                       </p>
                     )}
@@ -232,7 +232,7 @@ export default function CreateLocation() {
                 <input type="hidden" {...register("longitude")} />
               </div>
               {(errors.latitude || errors.longitude) && (
-                <p className="text-xs text-(--error) col-span-2">
+                <p className="text-xs text-(--error) font-semibold ml-1">
                   {t("selectLocationError")}
                 </p>
               )}

@@ -96,10 +96,10 @@ export function Dashboard() {
   return (
     <div className="flex flex-col gap-8">
       {/* Top Stats and Summary Section */}
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left:  Banners & Summary */}
         {homeData.today_summary.last_order ? (
-          <div className="w-full lg:w-1/2 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <SectionTitle
               title={
                 isRTL
@@ -110,14 +110,14 @@ export function Dashboard() {
             <TodaySummaryCard summary={homeData.today_summary} />
           </div>
         ) : (
-          <div className="w-full lg:w-1/2 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <SectionTitle title={isRTL ? "الإعلانات" : "Banners"} />
             <BannersSlider items={homeData.banners_section.items} />
           </div>
         )}
 
         {/* Right: Stats Grid */}
-        <div className="flex min-w-1/2   flex-col gap-4">
+        <div className="flex flex-col gap-4">
           <SectionTitle title={isRTL ? "الاحصائيات" : "Statistics"} />
           <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 ">
             {stats.map((stat, idx) => (
@@ -167,7 +167,7 @@ export function Dashboard() {
             ))}
           </DashboardCarousel>
         ) : (
-            <EmptySection
+          <EmptySection
             title={c("noLocations")}
             desc={c("noLocationsMsg")}
             btnLabel={c("Add New Location")}

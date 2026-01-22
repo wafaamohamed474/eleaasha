@@ -180,7 +180,7 @@ export const authApi = createApi({
         method: "GET",
         params: { lang },
       }),
-      providesTags: ["Location"],
+      providesTags: ["Location" , "Order"],
     }),
     GetAllMeals: builder.query<GetAllMealsResponse, string>({
       query: (lang) => ({

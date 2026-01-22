@@ -8,6 +8,7 @@ import placeholderImg from "@/assets/images/Placeholder_view_vector.svg.png";
 import { TodaySummary } from "@/types/dashboard";
 import Link from "next/link";
 import { formatTimeToArabic } from "@/utils/time";
+import { useSidebar } from "../ui/sidebar";
 
 interface TodaySummaryCardProps {
   summary: TodaySummary;
@@ -16,6 +17,7 @@ interface TodaySummaryCardProps {
 export default function TodaySummaryCard({ summary }: TodaySummaryCardProps) {
   const locale = useLocale();
   const isRTL = locale === "ar";
+  const { open } = useSidebar();
 
   const lastOrder = summary.last_order;
 
@@ -35,7 +37,12 @@ export default function TodaySummaryCard({ summary }: TodaySummaryCardProps) {
     items-center shadow-lg shadow-(--shadow-primary-lg) relative overflow-hidden"
     >
       {/* Details Side */}
-      <div className="w-full md:w-2/3 flex flex-col justify-start items-start gap-3 py-2">
+      <div
+        className={cn(
+          "flex flex-col justify-start items-start gap-3 py-2 transition-all duration-300",
+          open ? "w-full md:w-[70%] lg:w-3/5" : "w-full md:w-[70%]",
+        )}
+      >
         <div className="flex    ">
           <div className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 text-xs font-bold">
             <Calendar size={14} />
@@ -86,7 +93,12 @@ export default function TodaySummaryCard({ summary }: TodaySummaryCardProps) {
         </button>
       </div>
       {/* Image Side */}
-      <div className="w-full max-w-5/12 hidden md:block  aspect-square relative rounded-2xl overflow-hidden shadow-xl">
+      <div
+        className={cn(
+          "hidden md:block aspect-square relative rounded-2xl overflow-hidden shadow-xl transition-all duration-300",
+          open ? "w-full md:w-[30%] lg:w-2/5" : "w-full md:w-[30%]",
+        )}
+      >
         <Image
           src={lastOrder?.meal?.image || placeholderImg}
           alt="Order Summary"
@@ -114,9 +126,11 @@ export function DetailItem({
       <div className="p-1">
         <Icon size={16} className="text-white" />
       </div>
-      <div className={cn("flex items-center justify-start w-full")}>
-        <span className="text-[10px] text-white font-medium  ">{label} : </span>
-        <span className="text-[10px] font-medium line-clamp-1    flex-1 lg:max-w-[150px] ">
+      <div className={cn("flex items-center justify-start w-full min-w-0")}>
+        <span className="text-[10px] text-white font-medium shrink-0">
+          {label} :{" "}
+        </span>
+        <span className="text-[10px] font-medium line-clamp-1 flex-1 ml-1">
           {value}
         </span>
       </div>

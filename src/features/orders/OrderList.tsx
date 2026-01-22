@@ -63,7 +63,7 @@ export const OrderList: React.FC<OrderListProps> = ({
       <div className="flex flex-row justify-end">
         <Button
           asChild
-          className="bg-(--primary) hover:bg-(--primary)/90 text-white rounded-xl shadow-sm hover:shadow-md transition-all font-bold"
+          className="bg-(--primary) text-xs md:text-sm  hover:bg-(--primary)/90 text-white rounded-xl shadow-sm hover:shadow-md transition-all lg:font-semibold"
         >
           <Link href={`/${locale}/dashboard/meals`}>
             <Plus className="w-5 h-5" />
